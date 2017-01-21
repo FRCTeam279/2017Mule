@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team279.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -11,6 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team279.robot.commands.*;
 import org.usfirst.frc.team279.robot.subsystems.*;
 
+import edu.wpi.first.wpilibj.SPI;
+import com.kauailabs.navx.frc.AHRS;
+
+
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -19,25 +25,67 @@ import org.usfirst.frc.team279.robot.subsystems.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
+	private static AHRS ahrs = null;
+	public static AHRS getAhrs(){
+		if(ahrs == null) {
+			try {
+		          /* Communicate w/navX-MXP via the MXP SPI Bus.                                     */
+		          /* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
+		          /* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details. */
+		          Robot.ahrs = new AHRS(SPI.Port.kMXP); 
+		      } catch (RuntimeException ex ) {
+		          DriverStation.reportError("Robot: Error instantiating navX-MXP:  " + ex.getMessage(), true);
+		      }
+		}
+		return ahrs;
+	}
+	
+	//--------------------------------------------------------------------------
+	
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
 	public static OI oi;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
+	
+	
+	
+	
+	//--------------------------------------------------------------------------
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		
+		Robot.mecanumDrive.init();
+		
+		
 		oi = new OI();
+		oi.init();
+		
+
+		//TODO make config option
+		Robot.getAhrs().setAngleAdjustment(-45.0);
+		
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		// add other choices here...
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 
+	
+	//--------------------------------------------------------------------------
+	@Override
+	public void robotPeriodic() {
+		//Periodic code for all robot modes should go here. 
+		//This function is called each time a new packet is received from the driver station. 
+		//Packets are received approximately every 20ms. Fixed loop timing is not guaranteed due to network timing variability and the function may not be called at all if the Driver Station is disconnected. For most use cases the variable timing will not be an issue. If your code does require guaranteed fixed periodic timing, consider using Notifier or PIDController instead.
+	}
+	
+	
+	//--------------------------------------------------------------------------
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
 	 * You can use it to reset any subsystem information you want to clear when
@@ -53,6 +101,8 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 	}
 
+	
+	//--------------------------------------------------------------------------
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
 	 * between different autonomous modes using the dashboard. The sendable
@@ -87,7 +137,11 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 	}
-
+	
+	
+	
+	
+	//--------------------------------------------------------------------------
 	@Override
 	public void teleopInit() {
 		// This makes sure that the autonomous stops running when
@@ -106,6 +160,9 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 	}
 
+	
+	
+	//--------------------------------------------------------------------------
 	/**
 	 * This function is called periodically during test mode
 	 */
@@ -113,4 +170,6 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 	}
+	
+	
 }

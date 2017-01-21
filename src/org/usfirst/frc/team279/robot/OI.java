@@ -96,5 +96,36 @@ public class OI {
 		System.out.println("OI: Init Complete");
 		return true;   // all good
 	}
-
+	
+	//--------------------------------------------------------------------------
+	
+	public double filterInput(double input, double deadzone, double filterFactor) {
+		//1. deadzone
+		//2. filter
+		//	filtered = (fac * x^3) + ((1 - fac)*x)
+		// 3. max value
+		//https://www.desmos.com/calculator
+		//http://www.third-helix.com/2013/04/12/doing-thumbstick-dead-zones-right.html
+		
+		double sign = 1.0;
+		
+		if(input < 0.0) { sign = -1.0; } 		
+		input = java.lang.Math.abs(input);
+		deadzone = java.lang.Math.abs(deadzone);
+		
+		if(input < deadzone) {
+			input = 0.0;
+		} else {
+			input = input * ((input - deadzone) / (1-deadzone));
+		}
+		
+		double output = (filterFactor * (input * input * input)) + ((1 - filterFactor) * input);
+		output = sign * output;
+		return output;
+	}
+	
+	//--------------------------------------------------------------------------
+	
+	
+	//--------------------------------------------------------------------------
 }

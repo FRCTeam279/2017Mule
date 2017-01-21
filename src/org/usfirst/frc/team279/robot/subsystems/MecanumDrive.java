@@ -7,30 +7,28 @@ import edu.wpi.first.wpilibj.*;
 
 
 
-
 /**
  *
  */
 public class MecanumDrive extends Subsystem {
 
 
-	
 	private RobotDrive roboDrive = null;
 	public RobotDrive getRoboDrive() {
 		return roboDrive;
 	}
 	
 	//The preferencesPrefix will be prepended to the preferences loaded from the Robot Preferences
-	private String prefPrefix = "dl_";
+	private String prefPrefix = "md_";
 
 	private int leftFrontSpeedCtrlPort = 0;
 	private int rightFrontSpeedCtrlPort = 2;
 	private int leftRearSpeedCtrlPort = 1;
 	private int rightRearSpeedCtrlPort = 3;
 	
-	private boolean invertLeftFront = false;
+	private boolean invertLeftFront = true;
 	private boolean invertRightFront = false;
-	private boolean invertLeftRear = false;
+	private boolean invertLeftRear = true;
 	private boolean invertRightRear = false;
 	
 
@@ -53,7 +51,7 @@ public class MecanumDrive extends Subsystem {
 	
 	
 	public void init(){
-		
+		System.out.println("MD: MechenumDrive Init Starting");
     	leftFrontSpeedCtrl = new VictorSP(leftFrontSpeedCtrlPort);
 		rightFrontSpeedCtrl = new VictorSP(rightFrontSpeedCtrlPort);
 		leftRearSpeedCtrl = new VictorSP(leftRearSpeedCtrlPort);
@@ -61,19 +59,21 @@ public class MecanumDrive extends Subsystem {
 		
 		//RobotDrive(int frontLeftMotor, int rearLeftMotor, int frontRightMotor, int rearRightMotor)
 		roboDrive = new RobotDrive(leftFrontSpeedCtrl, leftRearSpeedCtrl, rightFrontSpeedCtrl, rightRearSpeedCtrl);
-		roboDrive.setSafetyEnabled(true);
-		roboDrive.setExpiration(0.5);
+		roboDrive.setSafetyEnabled(false);
+		//roboDrive.setExpiration(0.5);
 
 		roboDrive.setInvertedMotor(MotorType.kFrontLeft, invertLeftFront);
 		roboDrive.setInvertedMotor(MotorType.kFrontRight, invertRightFront);
 		roboDrive.setInvertedMotor(MotorType.kRearLeft, invertLeftRear);
 		roboDrive.setInvertedMotor(MotorType.kRearRight, invertRightRear);
+		System.out.println("MD: MechenumDrive Init Complete");
 	}
 	
 	
 		
     public void initDefaultCommand() {
     	setDefaultCommand(new org.usfirst.frc.team279.robot.commands.MecDriveTeleopDefaultFPS());
+    	System.out.println("MD: Set default command to MecDriveTeleopDefaultFPS");
     }
     
     
