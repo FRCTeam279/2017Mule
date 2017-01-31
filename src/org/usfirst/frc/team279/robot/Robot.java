@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import org.usfirst.frc.team279.robot.commands.*;
 import org.usfirst.frc.team279.robot.subsystems.*;
@@ -53,7 +54,10 @@ public class Robot extends IterativeRobot {
 	
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
 	public static OI oi;
-
+	
+	public static NetworkTable boilerTable;
+	public static NetworkTable gearTable; 
+	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -76,10 +80,13 @@ public class Robot extends IterativeRobot {
 		
 		Robot.mecanumDrive.init();
 		
+		//Setup Tables for Vision
+		NetworkTable.initialize();
+		boilerTable = NetworkTable.getTable("Boiler");
+		gearTable   = NetworkTable.getTable("Gear");
 		
 		oi = new OI();
 		oi.init();
-		
 
 		//TODO make config option
 		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
