@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team279.robot.commands.*;
 import org.usfirst.frc.team279.robot.subsystems.*;
+import org.usfirst.frc.team279.util.Config;
 
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
@@ -24,6 +25,9 @@ import org.usfirst.frc.team279.robot.commands.RotateAngleDegrees;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
+	private String prefPrefix = "robot_";
+	
 	private static AHRS ahrs = null;
 	public static AHRS getAhrs(){
 		if(ahrs == null) {
@@ -39,6 +43,12 @@ public class Robot extends IterativeRobot {
 		return ahrs;
 	}
 	
+	
+	private double ahrsGyroAdjustment = 0.0;
+	public double getAhrsGyroAdjustment(){
+		return ahrsGyroAdjustment;
+	}
+	
 	//--------------------------------------------------------------------------
 	
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
@@ -49,6 +59,11 @@ public class Robot extends IterativeRobot {
 
 	
 	
+	public void loadPrefs(){
+		Config c = new Config();
+		ahrsGyroAdjustment = c.load(prefPrefix + "ahrsGyroAdjustment", ahrsGyroAdjustment);
+		
+	}
 	
 	
 	//--------------------------------------------------------------------------
@@ -67,7 +82,7 @@ public class Robot extends IterativeRobot {
 		
 
 		//TODO make config option
-		Robot.getAhrs().setAngleAdjustment(-45.0);
+		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
