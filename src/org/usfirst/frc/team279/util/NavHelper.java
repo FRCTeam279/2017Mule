@@ -44,14 +44,16 @@ public class NavHelper {
 		return 0.0;
 	}
 	
-	public final boolean TURNCW = false;
-    public final boolean TURNCCW = true;
+	public static final boolean TURNCW = true;
+    public static final boolean TURNCCW = false;
+    
     /********************************************
      * Determines what way to rotate the robot  *
      * @param newRot                            *
      * @return true=CW false=CCW                *
      ********************************************/
-    public boolean FindTurnDirection(double curRot, double newRot) {
+    public static boolean FindTurnDirection(double curRot, double newRot) {
+    	//heading % 360;
     	if(newRot<180 && newRot>=0){
     		if(newRot>curRot)
     			return TURNCW;
@@ -71,7 +73,7 @@ public class NavHelper {
      * @param newLoc                            *
      * @return angle							*
      ********************************************/
-    public double getAngleToNewLoc(Location currentLoc, Location newLoc) {
+    public static double getAngleToNewLoc(Location currentLoc, Location newLoc) {
     	double distanceA = newLoc.getX() + currentLoc.getX();
     	System.out.println("DEBUG: distanceX = " + distanceA);
     	double distanceB = newLoc.getY() + currentLoc.getY();

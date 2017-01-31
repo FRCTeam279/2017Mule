@@ -14,8 +14,7 @@ import org.usfirst.frc.team279.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
-
-
+import org.usfirst.frc.team279.robot.commands.RotateAngleDegrees;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -71,6 +70,7 @@ public class Robot extends IterativeRobot {
 		Robot.getAhrs().setAngleAdjustment(-45.0);
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
+		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
 		// add other choices here...
 		SmartDashboard.putData("Auto mode", chooser);
 	}
