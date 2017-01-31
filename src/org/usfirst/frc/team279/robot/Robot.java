@@ -88,6 +88,9 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
 		// add other choices here...
 		SmartDashboard.putData("Auto mode", chooser);
+		
+		SmartDashboard.putData("Get Gear Distances",new DisplayGearRanges());		
+		SmartDashboard.putData("Save Config",new SaveConfig());
 	}
 
 	
