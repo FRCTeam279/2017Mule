@@ -20,10 +20,16 @@ public class MecanumDrive extends Subsystem {
 	public RobotDrive getRoboDrive() {
 		return roboDrive;
 	}
-	private Encoder encoderLeftFront = null;
-	private Encoder encoderRightFront = null;
-	private Encoder encoderLeftRear = null;
-	private Encoder encoderRightRear = null;
+	
+	
+	private int encoderLeftFrontPortA = 5;
+	private int encoderLeftFrontPortB = 6;
+	private int encoderRightFrontPortA = 7;
+	private int encoderRightFrontPortB = 8;
+	private int encoderLeftRearPortA = 9;
+	private int encoderLeftRearPortB = 10;
+	private int encoderRightRearPortA = 11;
+	private int encoderRightRearPortB = 12;
 	
 	//The preferencesPrefix will be prepended to the preferences loaded from the Robot Preferences
 	private String prefPrefix = "md_";
@@ -55,18 +61,22 @@ public class MecanumDrive extends Subsystem {
 		return turnSpeedFactor;
 	}	
 	
+	private Encoder encoderLeftFront = null;
 	public Encoder getEncoderLeftFront(){
 		return encoderLeftFront;
 	}
 	
+	private Encoder encoderRightFront = null;
 	public Encoder getEncoderRightFront(){
 		return encoderRightFront;
 	}
 	
+	private Encoder encoderLeftRear = null;
 	public Encoder getEncoderLeftRear(){
 		return encoderLeftRear;
 	}
 	
+	private Encoder encoderRightRear = null;
 	public Encoder getEncoderRightREar(){
 		return encoderRightRear;
 	}
@@ -90,6 +100,15 @@ public class MecanumDrive extends Subsystem {
 	
 	public void loadPrefs(){
 		Config c = new Config();
+		
+		encoderLeftFrontPortA = c.load(prefPrefix + "encoderLeftFrontPortA", encoderLeftFrontPortA);
+		encoderLeftFrontPortB = c.load(prefPrefix + "encoderLeftFrontPortB", encoderLeftFrontPortB);
+		encoderRightFrontPortA = c.load(prefPrefix + "encoderRightFrontPortA", encoderRightFrontPortA);
+		encoderRightFrontPortB = c.load(prefPrefix + "encoderRightFrontPortB", encoderRightFrontPortB);
+		encoderLeftRearPortA = c.load(prefPrefix + "encoderLeftRearPortA", encoderLeftRearPortA);
+		encoderLeftRearPortB = c.load(prefPrefix + "encoderLeftRearPortB", encoderLeftRearPortB);
+		encoderRightRearPortA = c.load(prefPrefix + "encoderRightRearPortA", encoderRightRearPortA);
+		encoderRightRearPortB = c.load(prefPrefix + "encoderRightRearPortB", encoderRightRearPortB);
 		
 		leftFrontSpeedCtrlPort = c.load(prefPrefix + "leftFrontSpeedCtrlPort", leftFrontSpeedCtrlPort);
 		leftRearSpeedCtrlPort = c.load(prefPrefix + "leftRearSpeedCtrlPort", leftRearSpeedCtrlPort);
