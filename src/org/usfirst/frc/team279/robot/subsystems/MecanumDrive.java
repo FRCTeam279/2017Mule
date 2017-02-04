@@ -20,6 +20,10 @@ public class MecanumDrive extends Subsystem {
 	public RobotDrive getRoboDrive() {
 		return roboDrive;
 	}
+	private Encoder encoderLeftFront = null;
+	private Encoder encoderRightFront = null;
+	private Encoder encoderLeftRear = null;
+	private Encoder encoderRightRear = null;
 	
 	//The preferencesPrefix will be prepended to the preferences loaded from the Robot Preferences
 	private String prefPrefix = "md_";
@@ -50,6 +54,22 @@ public class MecanumDrive extends Subsystem {
 	public double getTurnSpeedFactor(){
 		return turnSpeedFactor;
 	}	
+	
+	public Encoder getEncoderLeftFront(){
+		return encoderLeftFront;
+	}
+	
+	public Encoder getEncoderRightFront(){
+		return encoderRightFront;
+	}
+	
+	public Encoder getEncoderLeftRear(){
+		return encoderLeftRear;
+	}
+	
+	public Encoder getEncoderRightREar(){
+		return encoderRightRear;
+	}
 		
 	
 	
@@ -118,6 +138,12 @@ public class MecanumDrive extends Subsystem {
 		rangeRightGear = new Ultrasonic(rangeGearRightTrig, rangeGearRightEcho, Ultrasonic.Unit.kInches);
 		rangeLeftGear.setAutomaticMode(true);
 		rangeRightGear.setAutomaticMode(true);
+		
+		
+		encoderLeftFront = new Encoder(5,6);
+		encoderRightFront = new Encoder(7,8);
+		encoderLeftRear = new Encoder(9,10);
+		encoderRightRear = new Encoder(11,12);
 	}
 	
 	

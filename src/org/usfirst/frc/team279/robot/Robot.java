@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import org.usfirst.frc.team279.robot.commands.*;
+import org.usfirst.frc.team279.robot.commands.AutoDriveFoward;
 import org.usfirst.frc.team279.robot.subsystems.*;
 import org.usfirst.frc.team279.util.Config;
 
@@ -91,6 +92,7 @@ public class Robot extends IterativeRobot {
 		//TODO make config option
 		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
+		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
 		// add other choices here...
