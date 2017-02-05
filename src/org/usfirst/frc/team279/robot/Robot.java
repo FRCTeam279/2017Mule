@@ -52,6 +52,8 @@ public class Robot extends IterativeRobot {
 	//--------------------------------------------------------------------------
 	
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
+	public static final Ultrasonics ultrasonics = new Ultrasonics();
+	public static final TestShooter shooter = new TestShooter();
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -62,34 +64,29 @@ public class Robot extends IterativeRobot {
 	public void loadPrefs(){
 		Config c = new Config();
 		ahrsGyroAdjustment = c.load(prefPrefix + "ahrsGyroAdjustment", ahrsGyroAdjustment);
-		
 	}
 	
 	
-	//--------------------------------------------------------------------------
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
-	@Override
+
 	public void robotInit() {
 		
 		Robot.mecanumDrive.init();
-		
+		Robot.ultrasonics.init();
 		
 		oi = new OI();
 		oi.init();
 		
-
-		//TODO make config option
 		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
-		// add other choices here...
 		SmartDashboard.putData("Auto mode", chooser);
 		
-		SmartDashboard.putData("Get Gear Distances",new DisplayGearRanges());		
+		
+		SmartDashboard.putData("Start Ultrasonics",new StartUltrasonicsThread());
+		SmartDashboard.putData("Stop Ultrasonics",new StopUltrasonicsThread());
+		SmartDashboard.putData("Get Gear Distances",new DisplayGearRanges());
+		
 		SmartDashboard.putData("Save Config",new SaveConfig());
 	}
 
@@ -97,94 +94,45 @@ public class Robot extends IterativeRobot {
 	//--------------------------------------------------------------------------
 	@Override
 	public void robotPeriodic() {
-		//Periodic code for all robot modes should go here. 
-		//This function is called each time a new packet is received from the driver station. 
-		//Packets are received approximately every 20ms. Fixed loop timing is not guaranteed due to network timing variability and the function may not be called at all if the Driver Station is disconnected. For most use cases the variable timing will not be an issue. If your code does require guaranteed fixed periodic timing, consider using Notifier or PIDController instead.
 	}
 	
-	
-	//--------------------------------------------------------------------------
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
-	@Override
+
 	public void disabledInit() {
 
 	}
 
-	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
 	
-	//--------------------------------------------------------------------------
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
-	 */
-	@Override
+	
 	public void autonomousInit() {
 		autonomousCommand = chooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
 
-	/**
-	 * This function is called periodically during autonomous
-	 */
-	@Override
+	
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 	}
 	
 	
 	
-	
-	//--------------------------------------------------------------------------
-	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}
 
-	/**
-	 * This function is called periodically during operator control
-	 */
-	@Override
+	
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
 	
 	
-	//--------------------------------------------------------------------------
-	/**
-	 * This function is called periodically during test mode
-	 */
-	@Override
+	
 	public void testPeriodic() {
 		LiveWindow.run();
 	}

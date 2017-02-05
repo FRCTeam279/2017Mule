@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.Ultrasonic;
+
+import javax.print.attribute.standard.MediaSize.Other;
+
 import org.usfirst.frc.team279.util.Config;
 
 import edu.wpi.first.wpilibj.*;
@@ -14,7 +17,6 @@ import edu.wpi.first.wpilibj.*;
  *
  */
 public class MecanumDrive extends Subsystem {
-	
 
 	private RobotDrive roboDrive = null;
 	public RobotDrive getRoboDrive() {
@@ -53,21 +55,6 @@ public class MecanumDrive extends Subsystem {
 		
 	
 	
-	private int rangeGearLeftTrig = 0;
-	private int rangeGearLeftEcho = 1;
-	private int rangeGearRightTrig = 2;
-	private int rangeGearRightEcho = 3;
-	
-	private Ultrasonic rangeLeftGear = null;
-	public Ultrasonic getGearLeftUS(){
-		return rangeLeftGear;
-	}
-	private Ultrasonic rangeRightGear = null;
-	public Ultrasonic getGearRightUS(){
-		return rangeRightGear;
-	}
-	
-	
 	public void loadPrefs(){
 		Config c = new Config();
 		
@@ -83,16 +70,10 @@ public class MecanumDrive extends Subsystem {
 		
 		driveSpeedFactor = c.load(prefPrefix + "driveSpeedFactor", driveSpeedFactor);
 		turnSpeedFactor = c.load(prefPrefix + "turnSpeedFactor", turnSpeedFactor);
-		
-		rangeGearLeftTrig = c.load(prefPrefix + "rangeGearLeftTrig", rangeGearLeftTrig);
-		rangeGearLeftEcho = c.load(prefPrefix + "rangeGearLeftEcho", rangeGearLeftEcho);
-		rangeGearRightTrig = c.load(prefPrefix + "rangeGearRightTrig", rangeGearRightTrig);
-		rangeGearRightEcho = c.load(prefPrefix + "rangeGearRightEcho", rangeGearRightEcho);
 	}
 
 	
 	public void init(){
-		
 		System.out.println("MD: MechenumDrive Init Starting");
 		
 		loadPrefs();
@@ -103,7 +84,6 @@ public class MecanumDrive extends Subsystem {
 		leftRearSpeedCtrl = new VictorSP(leftRearSpeedCtrlPort);
 		rightRearSpeedCtrl = new VictorSP(rightRearSpeedCtrlPort);
 		
-		//RobotDrive(int frontLeftMotor, int rearLeftMotor, int frontRightMotor, int rearRightMotor)
 		roboDrive = new RobotDrive(leftFrontSpeedCtrl, leftRearSpeedCtrl, rightFrontSpeedCtrl, rightRearSpeedCtrl);
 		roboDrive.setSafetyEnabled(false);
 		//roboDrive.setExpiration(0.5);
@@ -112,14 +92,9 @@ public class MecanumDrive extends Subsystem {
 		roboDrive.setInvertedMotor(MotorType.kFrontRight, invertRightFront);
 		roboDrive.setInvertedMotor(MotorType.kRearLeft, invertLeftRear);
 		roboDrive.setInvertedMotor(MotorType.kRearRight, invertRightRear);
-		System.out.println("MD: MechenumDrive Init Complete");
 		
-		rangeLeftGear = new Ultrasonic(rangeGearLeftTrig, rangeGearLeftEcho, Ultrasonic.Unit.kInches);
-		rangeRightGear = new Ultrasonic(rangeGearRightTrig, rangeGearRightEcho, Ultrasonic.Unit.kInches);
-		rangeLeftGear.setAutomaticMode(true);
-		rangeRightGear.setAutomaticMode(true);
+		System.out.println("MD: MechenumDrive Init Complete");	
 	}
-	
 	
 		
     public void initDefaultCommand() {
