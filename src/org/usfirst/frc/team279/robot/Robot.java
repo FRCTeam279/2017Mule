@@ -53,7 +53,6 @@ public class Robot extends IterativeRobot {
 	
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
 	public static final Ultrasonics ultrasonics = new Ultrasonics();
-	public static final TestShooter shooter = new TestShooter();
 	public static OI oi;
 
 	Command autonomousCommand;
