@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import org.usfirst.frc.team279.robot.commands.*;
+import org.usfirst.frc.team279.robot.commands.AutoDriveFoward;
 import org.usfirst.frc.team279.robot.subsystems.*;
 import org.usfirst.frc.team279.util.Config;
 
@@ -54,7 +56,10 @@ public class Robot extends IterativeRobot {
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
 	public static final Ultrasonics ultrasonics = new Ultrasonics();
 	public static OI oi;
-
+	
+	public static NetworkTable boilerTable;
+	public static NetworkTable gearTable; 
+	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -70,13 +75,27 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		
 		Robot.mecanumDrive.init();
+<<<<<<< HEAD
 		Robot.ultrasonics.init();
 		
 		oi = new OI();
 		oi.init();
 		
+=======
+		
+		//Setup Tables for Vision
+		NetworkTable.initialize();
+		boilerTable = NetworkTable.getTable("Boiler");
+		gearTable   = NetworkTable.getTable("Gear");
+		
+		oi = new OI();
+		oi.init();
+
+		//TODO make config option
+>>>>>>> origin/master
 		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
+		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
 		SmartDashboard.putData("Auto mode", chooser);

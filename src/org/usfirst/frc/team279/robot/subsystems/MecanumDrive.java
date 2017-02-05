@@ -23,6 +23,16 @@ public class MecanumDrive extends Subsystem {
 		return roboDrive;
 	}
 	
+	
+	private int encoderLeftFrontPortA = 5;
+	private int encoderLeftFrontPortB = 6;
+	private int encoderRightFrontPortA = 7;
+	private int encoderRightFrontPortB = 8;
+	private int encoderLeftRearPortA = 9;
+	private int encoderLeftRearPortB = 10;
+	private int encoderRightRearPortA = 11;
+	private int encoderRightRearPortB = 12;
+	
 	//The preferencesPrefix will be prepended to the preferences loaded from the Robot Preferences
 	private String prefPrefix = "md_";
 
@@ -52,11 +62,40 @@ public class MecanumDrive extends Subsystem {
 	public double getTurnSpeedFactor(){
 		return turnSpeedFactor;
 	}	
+	
+	private Encoder encoderLeftFront = null;
+	public Encoder getEncoderLeftFront(){
+		return encoderLeftFront;
+	}
+	
+	private Encoder encoderRightFront = null;
+	public Encoder getEncoderRightFront(){
+		return encoderRightFront;
+	}
+	
+	private Encoder encoderLeftRear = null;
+	public Encoder getEncoderLeftRear(){
+		return encoderLeftRear;
+	}
+	
+	private Encoder encoderRightRear = null;
+	public Encoder getEncoderRightREar(){
+		return encoderRightRear;
+	}
 		
 	
 	
 	public void loadPrefs(){
 		Config c = new Config();
+		
+		encoderLeftFrontPortA = c.load(prefPrefix + "encoderLeftFrontPortA", encoderLeftFrontPortA);
+		encoderLeftFrontPortB = c.load(prefPrefix + "encoderLeftFrontPortB", encoderLeftFrontPortB);
+		encoderRightFrontPortA = c.load(prefPrefix + "encoderRightFrontPortA", encoderRightFrontPortA);
+		encoderRightFrontPortB = c.load(prefPrefix + "encoderRightFrontPortB", encoderRightFrontPortB);
+		encoderLeftRearPortA = c.load(prefPrefix + "encoderLeftRearPortA", encoderLeftRearPortA);
+		encoderLeftRearPortB = c.load(prefPrefix + "encoderLeftRearPortB", encoderLeftRearPortB);
+		encoderRightRearPortA = c.load(prefPrefix + "encoderRightRearPortA", encoderRightRearPortA);
+		encoderRightRearPortB = c.load(prefPrefix + "encoderRightRearPortB", encoderRightRearPortB);
 		
 		leftFrontSpeedCtrlPort = c.load(prefPrefix + "leftFrontSpeedCtrlPort", leftFrontSpeedCtrlPort);
 		leftRearSpeedCtrlPort = c.load(prefPrefix + "leftRearSpeedCtrlPort", leftRearSpeedCtrlPort);
@@ -93,7 +132,20 @@ public class MecanumDrive extends Subsystem {
 		roboDrive.setInvertedMotor(MotorType.kRearLeft, invertLeftRear);
 		roboDrive.setInvertedMotor(MotorType.kRearRight, invertRightRear);
 		
+<<<<<<< HEAD
 		System.out.println("MD: MechenumDrive Init Complete");	
+=======
+		rangeLeftGear = new Ultrasonic(rangeGearLeftTrig, rangeGearLeftEcho, Ultrasonic.Unit.kInches);
+		rangeRightGear = new Ultrasonic(rangeGearRightTrig, rangeGearRightEcho, Ultrasonic.Unit.kInches);
+		rangeLeftGear.setAutomaticMode(true);
+		rangeRightGear.setAutomaticMode(true);
+		
+		
+		encoderLeftFront = new Encoder(5,6);
+		encoderRightFront = new Encoder(7,8);
+		encoderLeftRear = new Encoder(9,10);
+		encoderRightRear = new Encoder(11,12);
+>>>>>>> origin/master
 	}
 	
 		

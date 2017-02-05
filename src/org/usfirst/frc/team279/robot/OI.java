@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
+import org.usfirst.frc.team279.robot.commands.ResetGyro;
 import org.usfirst.frc.team279.robot.commands.*;
 import org.usfirst.frc.team279.util.Attack3Joystick;
 //import org.usfirst.frc.team279.lib.*;
@@ -59,7 +59,7 @@ public class OI {
 		return goControllerNullZone;
 	}
 	
-	
+	public JoystickButton resetGyroBtn = new JoystickButton(rightDriverStick, 2);
 	
 	//--------------------------------------------------------------------------
 	public void readConfig(){
@@ -91,6 +91,8 @@ public class OI {
 			System.out.println("OI: Error instantiating goController: " + e.getMessage());
 		}
 		
+			resetGyroBtn = new JoystickButton(rightDriverStick, 2);
+			resetGyroBtn.whenPressed(new ResetGyro());
 		
 
 		System.out.println("OI: Init Complete");
