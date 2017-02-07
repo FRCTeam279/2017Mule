@@ -53,6 +53,7 @@ public class Robot extends IterativeRobot {
 	//--------------------------------------------------------------------------
 	
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
+	public static final Shooter shooter = new Shooter();
 	public static final Ultrasonics ultrasonics = new Ultrasonics();
 	public static OI oi;
 	
@@ -74,6 +75,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		
 		Robot.mecanumDrive.init();
+		Robot.shooter.init();
 		Robot.ultrasonics.init();
 
 
