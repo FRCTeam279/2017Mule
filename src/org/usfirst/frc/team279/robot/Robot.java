@@ -75,14 +75,9 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		
 		Robot.mecanumDrive.init();
-<<<<<<< HEAD
 		Robot.ultrasonics.init();
-		
-		oi = new OI();
-		oi.init();
-		
-=======
-		
+
+
 		//Setup Tables for Vision
 		NetworkTable.initialize();
 		boilerTable = NetworkTable.getTable("Boiler");
@@ -91,8 +86,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		oi.init();
 
-		//TODO make config option
->>>>>>> origin/master
+
 		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
 		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
