@@ -53,6 +53,7 @@ public class Robot extends IterativeRobot {
 	//--------------------------------------------------------------------------
 	
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
+	public static final Shooter      shooter      = new Shooter();
 	public static OI oi;
 	
 	public static NetworkTable boilerTable;
@@ -79,6 +80,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		
 		Robot.mecanumDrive.init();
+		Robot.shooter.init();
 		
 		//Setup Tables for Vision
 		NetworkTable.initialize();
@@ -89,7 +91,7 @@ public class Robot extends IterativeRobot {
 		oi.init();
 
 		//TODO make config option
-		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
+		//Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
@@ -98,6 +100,8 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putData("Get Gear Distances",new DisplayGearRanges());		
 		SmartDashboard.putData("Save Config",new SaveConfig());
+		
+		SmartDashboard.putData("Test Shot", new TestShot());
 	}
 
 	
