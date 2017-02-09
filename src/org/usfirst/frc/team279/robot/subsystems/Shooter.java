@@ -56,6 +56,10 @@ public class Shooter extends Subsystem {
 	
 	//Shooter CANTalon with getter
 	private CANTalon shooterMotor = null;
+	/**
+	 * @return Shooter SpeedController
+	 * @see CANTalon
+	 */
 	public CANTalon getShooterController() {
 		return shooterMotor;
 	}
@@ -101,9 +105,8 @@ public class Shooter extends Subsystem {
     }
     
     
-    /*
-     * loadPrefs()
-     * loads the values from the SmartDashboard
+    /**
+     * Loads the values from the SmartDashboard
      */
     public void loadPrefs() {
 		Config c = new Config();
@@ -137,9 +140,8 @@ public class Shooter extends Subsystem {
 	}
     
     
-    /*
-     * shooterConfig()
-     * sets up the TalonSRX for the shooter
+    /**
+     * Sets up the TalonSRX for the shooter
      */
     private void shooterConfig() {
     	//Setup Feedback
@@ -163,9 +165,12 @@ public class Shooter extends Subsystem {
     
     //*** SHOOTER MOTOR **********************************************
     
-    /*
-     * setDefaultPIDValues(double p, double i, double d)
+    /**
      * Sets a new default PID Value
+     * @param p Proportional
+     * @param i Integral
+     * @param d Derivative
+     * @param f Feed
      */
     public void setDefaultPIDValues(double p, double i, double d, double f) {
     	this.p = p;
@@ -175,9 +180,8 @@ public class Shooter extends Subsystem {
     }
     
     
-    /*
-     * resetDefaultPIDValues()
-     * Resets pid default values to the values received from prefs
+    /**
+     * Resets PID default values to the values received from prefs
      */
     public void resetDefaultPIDValues() {
     	p = dP;
@@ -187,9 +191,8 @@ public class Shooter extends Subsystem {
     }
     
     
-    /*
-     * resetPID()
-     * sets PID to the current pid default values
+    /**
+     * Sets PID to the current PID default values
      */
     private void resetPID() {
     	shooterMotor.setP(p);
@@ -199,10 +202,10 @@ public class Shooter extends Subsystem {
     }
     
     
-    /*
-     * shootRPM(double rpm)
-     * sets the motor speed according to the inputed rpm
-     * uses default PID settings
+    /**
+     * Sets the motor speed according to the inputed RPM
+     * Uses default PID settings
+     * @param rpm Speed in Revolutions Per Minute
      */
     public void shootRPM(double rpm) {
     	resetPID();
@@ -217,11 +220,10 @@ public class Shooter extends Subsystem {
     }
     
     
-    /*
-     * shootPWM(double pwm)
-     * input a number between -1 and 1
-     * sets the motor speed according to the inputed spd
-     * no PID used
+    /**
+     * Sets the motor speed according to the inputed speed
+     * No PID used
+     * @param pwm Number between -1 and 1
      */
     public void shootPWM(double pwm) {
     	resetPID();
@@ -236,10 +238,14 @@ public class Shooter extends Subsystem {
     }
     
     
-    /*
-     * shootPID(double rpm, double p, double i, double d)
-     * sets the motor speed according to the inputed rpm
-     * sets a custom pid for the shot
+    /**
+     * Sets the motor speed according to the inputed RPM
+     * Sets a custom PID for the speed
+     * @param rpm Speed in Revolutions Per Minute
+     * @param p Proportional
+     * @param i Integral
+     * @param d Derivative
+     * @param f Feed
      */
     public void shootPID(double rpm, double p, double i, double d, double f) {
     	//Setup PID
@@ -258,9 +264,8 @@ public class Shooter extends Subsystem {
     }
     
     
-    /*
-     * stopShooter()
-     * stops the motor running the shooter
+    /**
+     * Stops the motor running the shooter
      */
     public void stopShooter() {
     	shooterMotor.stopMotor();
@@ -270,45 +275,42 @@ public class Shooter extends Subsystem {
     
     //*** FEED MOTOR *************************************************
     
-    /*
-     * feed()
-     * run the feed motor forward at the rate received from prefs
+    /**
+     * Run the feed motor forward at the default rate
      */
     public void feed() {
     	feedMotor.set(feedSpeed);
     }
     
 
-    /*
-     * feed()
-     * run the feed motor forward at the rate given
+    /**
+     * Run the feed motor forward at the given rate
+     * @param spd Number between -1 and 1
      */
     public void feed(double spd) {
     	feedMotor.set(spd);
     }
     
     
-    /*
-     * reverseFeed()
-     * run the feed motor in reverse at the rate received from prefs
+    /**
+     * Run the feed motor in reverse at the default rate
      */
     public void reverseFeed() {
     	feedMotor.set(-feedSpeed);
     }
     
 
-    /*
-     * reverseFeed()
-     * run the feed motor in reverse at the rate given
+    /**
+     * Run the feed motor in reverse at the given rate
+     * @param spd Number between -1 and 1
      */
     public void reverseFeed(double spd) {
     	feedMotor.set(spd);
     }
     
     
-    /*
-     * stopFeed()
-     * stops the feed motor
+    /**
+     * Stops the feed motor
      */
     public void stopFeed() {
     	feedMotor.stopMotor();
@@ -319,11 +321,9 @@ public class Shooter extends Subsystem {
     
     //*** E-STOP *****************************************************
     
-    /*
-     * stopAll()
-     * stops the motor running the shooter
-     * stops the motor running the screw
-     * stops the motor running the feed
+    /**
+     * Stops the motor running the shooter
+     * Stops the motor running the feed
      */
     public void stopAll() {
     	stopShooter();
@@ -335,15 +335,16 @@ public class Shooter extends Subsystem {
     
     //*** CALCULATIONS ***********************************************
     
-    /*
-     * calcSpeedFromAngle()
-     * gets the distance from the camera and compares it to pre-recorded
+    /**
+     * Gets the distance from the camera and compares it to pre-recorded
      * information(Max and Min shot data) to get the speed needed. Also
      * takes in to account the which angle is being used.
      * 
-     * gets a percent:    % = d / (dMax - dMin)
-     * returns a speed: spd = (spdMax - spdMin) * %
-     * returns in RPM
+     * {@code percent = d / (dMax - dMin);}
+     * {@code speed = (spdMax - spdMin) * %}
+     * speed calc veries based on the two angles.
+     * 
+     * @return RPM needed to make the shot
      */    
     public double calcSpeedFromAngle() {
     	double percent = 0.0;
@@ -361,11 +362,15 @@ public class Shooter extends Subsystem {
     
     //*** VISION GETTER'S ********************************************
     
-    /*
-     * updateDistance()
-     * updates the Distance from the camera to the base of the tower 
+    /**
+     * Updates the Distance from the camera to the base of the tower 
      * based on the information received from the Rasp PI through the
      * Network Tables
+     * 
+     * If {@value -1.0} is returned then an error occurred while
+     * retrieving the value.
+     * 
+     * @return Distance from the camera to the target
      */
 	public double getDistance() {
 		try {
@@ -377,10 +382,14 @@ public class Shooter extends Subsystem {
     }
     
     
-    /*
-     * updateAngle()
-     * updates the Rotation Angle of the robot based on the information
+    /**
+     * Updates the Rotation Angle of the robot based on the information
      * received from the Rasp PI through the Network Tables
+     * 
+     * If {@value -1.0} is returned then an error occurred while
+     * retrieving the value.
+     * 
+     * @return Horz. Angle from the front of the camera to the target
      */
     public double getAngle() {
     	try {
@@ -392,9 +401,9 @@ public class Shooter extends Subsystem {
     }
     
     
-    /*
-     * eyesOnTarget()
-     * returns true if the camera can see the target
+    /**
+     * Tells you if the camera sees the target
+     * @return True if target is seen, False if target is not seen
      */
     public boolean getEyes() {
     	try {
