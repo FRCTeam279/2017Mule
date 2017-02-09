@@ -15,7 +15,7 @@ public class Shooter extends Subsystem {
 	
 	/*
 	 * Note:
-	 * > Encoder on the motor before the gearRatio
+	 * > Encoder is between the motor and the gearbox (measures direct motor speeds)
 	 * > Angle will now be two fixed angles which are TBD
 	 * > 
 	 */
@@ -23,41 +23,36 @@ public class Shooter extends Subsystem {
 	//The preferencesPrefix will be prepended to the preferences loaded from the Robot Preferences
 	private String prefPrefix = "sh_";
 	
-	//RPM Calculation Constants
-	private final double MAX_SHOOTER_MOTOR_RPM    = 18730.0;//RPM
-	//private final double SHOOTER_GEAR_RATIO     = 2.0;    //Ratio
+	//Shooter motor max speed
+	private double  maxShooterMotorRPM = 18730.0;//RPM
 	
-	//Calculation Constants
-	private final double MAX_DISTANCE             = 0.0; //feet
-	private final double MAX_ANGLE                = 0.0; //degrees
-	private final double MAX_SPEED                = 0.0; //rpm
-	private final double MIN_DISTANCE             = 0.0; //feet
-	private final double MIN_ANGLE                = 0.0; //degrees
-	private final double MIN_SPEED                = 0.0; //rpm
+	//Angles - in degrees
+	private double  degOne    = 0.0;
+	private double  degTwo    = 0.0;
+	private boolean whichDeg = false; //One = false; Two = true;
+	
+	//MAX and MIN values at degOne and degTwo
+	private double  degOneDistanceMax = 0.0;
+	private double  degOneDistanceMin = 0.0;
+	private double  degOneSpeedMax    = 0.0;
+	private double  degOneSpeedMin    = 0.0;
+	private double  degTwoDistanceMax = 0.0;
+	private double  degTwoDistanceMin = 0.0;
+	private double  degTwoSpeedMax    = 0.0;
+	private double  degTwoSpeedMin    = 0.0;
 	
 	//Feed Motor Default Speed
-	private double feedSpeed = 0.0;
+	private double  feedSpeed     = 0.0;
 	
-	//Shooter PID Values (leave at 0.0)
-	private double p         = 0.0;
-	private double i         = 0.0;
-	private double d         = 0.0;
-	private double dP        = 0.0;
-	private double dI        = 0.0;
-	private double dD        = 0.0;
-	
-	//SpeedController Ports
-	private int shooterPort  = 1;
-	private int screwPort    = 0;
-	private int feedPort     = 0;
-	
-	//SpeedController Inverts
-	private boolean invertShooter = false;
-	private boolean invertScrew   = false;
-	private boolean invertFeed    = false;
-	
-	//CANTalon Encoder Invert
-	private boolean invertEncoder = true;
+	//Shooter PID Values
+	private double  p             = 0.0;
+	private double  i             = 0.0;
+	private double  d             = 0.0;
+	private double  f             = 0.0;
+	private double  dP            = 0.0;
+	private double  dI            = 0.0;
+	private double  dD            = 0.0;
+	private double  dF            = 0.0;
 	
 	//Shooter CANTalon with getter
 	private CANTalon shooterMotor = null;
@@ -65,12 +60,19 @@ public class Shooter extends Subsystem {
 		return shooterMotor;
 	}
 	
-	//SpeedControllers
-	private SpeedController screwMotor  = null;
+	//Feed SpeedController
 	private SpeedController feedMotor   = null;
 	
+	//SpeedController Ports
+	private int     shooterPort   = 1;
+	private int     feedPort      = 0;
 	
-	//private double testSpeed = 0.0;
+	//SpeedController Inverts
+	private boolean invertShooter = false;
+	private boolean invertFeed    = false;
+	
+	//CANTalon Encoder Invert
+	private boolean invertEncoder = true;
 	
 	
 	
@@ -84,7 +86,6 @@ public class Shooter extends Subsystem {
 		System.out.println("SH: Preferences loaded");
     	
     	shooterMotor = new CANTalon(shooterPort);
-    	//screwMotor   = new Talon(screwPort); commented out because the talons are not on the robot
     	//feedMotor    = new Talon(feedPort);  commented out because the talons are not on the robot
 		System.out.println("SH: Speed Controllers Setup");
     	
@@ -107,18 +108,32 @@ public class Shooter extends Subsystem {
     public void loadPrefs() {
 		Config c = new Config();
 		
-		//testSpeed     = c.load(prefPrefix + "testSpeed", testSpeed);
 		shooterPort   = c.load(prefPrefix + "shooterPort", shooterPort);
-		screwPort     = c.load(prefPrefix + "screwPort", screwPort);
 		feedPort      = c.load(prefPrefix + "feedPort", feedPort);
 		invertShooter = c.load(prefPrefix + "invertShooter", invertShooter);
-		invertScrew   = c.load(prefPrefix + "invertScrew", invertScrew);
 		invertFeed    = c.load(prefPrefix + "invertFeed", invertFeed);
 		invertEncoder = c.load(prefPrefix + "invertEncoder", invertEncoder);
+		
 		dP            = c.load(prefPrefix + "defaultP", dP);
 		dI            = c.load(prefPrefix + "defaultI", dI);
 		dD            = c.load(prefPrefix + "defaultD", dD);
+		dF            = c.load(prefPrefix + "defaultF", dF);
+		
+		degOne        = c.load(prefPrefix + "degreeOne", degOne);
+		degTwo        = c.load(prefPrefix + "degreeTwo", degTwo);
+		whichDeg      = c.load(prefPrefix + "whichDegree", whichDeg);
+		
+		maxShooterMotorRPM = c.load(prefPrefix + "maxShooterMotorRPM", maxShooterMotorRPM);
 		feedSpeed     = c.load(prefPrefix + "feedSpeed", feedSpeed);
+
+		degOneDistanceMax = c.load(prefPrefix + "degOneDistanceMax", degOneDistanceMax);
+		degOneDistanceMin = c.load(prefPrefix + "degOneDistanceMin", degOneDistanceMin);
+		degOneSpeedMax    = c.load(prefPrefix + "degOneSpeedMax", degOneSpeedMax);
+		degOneSpeedMin    = c.load(prefPrefix + "degOneSpeedMin", degOneSpeedMin);
+		degTwoDistanceMax = c.load(prefPrefix + "degTwoDistanceMax", degTwoDistanceMax);
+		degTwoDistanceMin = c.load(prefPrefix + "degTwoDistanceMin", degTwoDistanceMin);
+		degTwoSpeedMax    = c.load(prefPrefix + "degTwoSpeedMax", degTwoSpeedMax);
+		degTwoSpeedMin    = c.load(prefPrefix + "degTwoSpeedMin", degTwoSpeedMin);
 	}
     
     
@@ -142,14 +157,7 @@ public class Shooter extends Subsystem {
     	//Other Setup
     	shooterMotor.enableBrakeMode(false);
     	shooterMotor.reverseOutput(invertShooter);
- 
-    }
-    
-//    public void test(double num) {
-//    	shooterMotor.changeControlMode(TalonControlMode.Voltage);
-//    	shooterMotor.set(num);
-//    }
-    
+    }    
     
     
     
@@ -159,30 +167,35 @@ public class Shooter extends Subsystem {
      * setDefaultPIDValues(double p, double i, double d)
      * Sets a new default PID Value
      */
-    public void setDefaultPIDValues(double p, double i, double d) {
+    public void setDefaultPIDValues(double p, double i, double d, double f) {
     	this.p = p;
     	this.i = i;
     	this.d = d;
+    	this.f = f;
     }
     
     
     /*
      * resetDefaultPIDValues()
-     * Resets PID back to the values received from prefs
+     * Resets pid default values to the values received from prefs
      */
     public void resetDefaultPIDValues() {
     	p = dP;
     	i = dI;
     	d = dD;
+    	f = dF;
     }
     
     
     /*
      * resetPID()
-     * sets PID to the default values
+     * sets PID to the current pid default values
      */
     private void resetPID() {
-    	shooterMotor.setPID(p, i, d);
+    	shooterMotor.setP(p);
+    	shooterMotor.setI(i);
+    	shooterMotor.setD(d);
+    	shooterMotor.setF(f);
     }
     
     
@@ -195,8 +208,8 @@ public class Shooter extends Subsystem {
     	resetPID();
     	
     	//prevent errors
-    	if(rpm > MAX_SHOOTER_MOTOR_RPM) { rpm = MAX_SHOOTER_MOTOR_RPM; }
-    	if(rpm < -MAX_SHOOTER_MOTOR_RPM){ rpm = -MAX_SHOOTER_MOTOR_RPM; }
+    	if(rpm > maxShooterMotorRPM) { rpm = maxShooterMotorRPM; }
+    	if(rpm < -maxShooterMotorRPM){ rpm = -maxShooterMotorRPM; }
     	
     	//set speed
     	shooterMotor.changeControlMode(TalonControlMode.Speed);
@@ -208,7 +221,7 @@ public class Shooter extends Subsystem {
      * shootPWM(double pwm)
      * input a number between -1 and 1
      * sets the motor speed according to the inputed spd
-     * uses default PID settings
+     * no PID used
      */
     public void shootPWM(double pwm) {
     	resetPID();
@@ -228,13 +241,16 @@ public class Shooter extends Subsystem {
      * sets the motor speed according to the inputed rpm
      * sets a custom pid for the shot
      */
-    public void shootPID(double rpm, double p, double i, double d) {
-    	shooterMotor.setPID(p, i, d);
-    	//calculate a -1 to 1 number from given rpm
+    public void shootPID(double rpm, double p, double i, double d, double f) {
+    	//Setup PID
+    	shooterMotor.setP(p);
+    	shooterMotor.setI(i);
+    	shooterMotor.setD(d);
+    	shooterMotor.setF(f);
     	
     	//prevent errors
-    	if(rpm>MAX_SHOOTER_MOTOR_RPM) { rpm = MAX_SHOOTER_MOTOR_RPM; }
-    	if(rpm<-MAX_SHOOTER_MOTOR_RPM){ rpm = -MAX_SHOOTER_MOTOR_RPM;}
+    	if(rpm>maxShooterMotorRPM) { rpm = maxShooterMotorRPM; }
+    	if(rpm<-maxShooterMotorRPM){ rpm = -maxShooterMotorRPM;}
     	
     	//set speed
     	shooterMotor.changeControlMode(TalonControlMode.Speed);
@@ -252,37 +268,6 @@ public class Shooter extends Subsystem {
     
     
     
-    
-    //*** SCREW MOTOR ************************************************
-    
-    /*
-     * screw(double spd)
-     * input a number between -1 and 1
-     * sets the motor speed according to the inputed spd
-     */
-    public void screw(double spd) {
-    	if(invertScrew) { spd *= -1; }
-    	
-    	//prevent errors
-    	if(spd>1) { spd = 1; }
-    	if(spd<-1){ spd = -1;}
-    	
-    	//set speed
-    	screwMotor.set(spd);
-    }
-    
-    
-    /*
-     * stopScrewing()
-     * stops the motor running the screw
-     */
-    public void stopScrewing() {
-    	screwMotor.stopMotor();
-    }
-    
-    
-    
-    
     //*** FEED MOTOR *************************************************
     
     /*
@@ -293,6 +278,15 @@ public class Shooter extends Subsystem {
     	feedMotor.set(feedSpeed);
     }
     
+
+    /*
+     * feed()
+     * run the feed motor forward at the rate given
+     */
+    public void feed(double spd) {
+    	feedMotor.set(spd);
+    }
+    
     
     /*
      * reverseFeed()
@@ -300,6 +294,15 @@ public class Shooter extends Subsystem {
      */
     public void reverseFeed() {
     	feedMotor.set(-feedSpeed);
+    }
+    
+
+    /*
+     * reverseFeed()
+     * run the feed motor in reverse at the rate given
+     */
+    public void reverseFeed(double spd) {
+    	feedMotor.set(spd);
     }
     
     
@@ -324,7 +327,6 @@ public class Shooter extends Subsystem {
      */
     public void stopAll() {
     	stopShooter();
-    	stopScrewing();
     	stopFeed();
     }
     
@@ -334,32 +336,26 @@ public class Shooter extends Subsystem {
     //*** CALCULATIONS ***********************************************
     
     /*
-     * speedCalc()
+     * calcSpeedFromAngle()
      * gets the distance from the camera and compares it to pre-recorded
-     * information(Max and Min shot data) to get the speed needed.
+     * information(Max and Min shot data) to get the speed needed. Also
+     * takes in to account the which angle is being used.
      * 
      * gets a percent:    % = d / (dMax - dMin)
      * returns a speed: spd = (spdMax - spdMin) * %
-     */
-    public double speedCalc() {
-    	double percent = getDistance() / (MAX_DISTANCE - MIN_DISTANCE);
-    	return (MAX_SPEED - MIN_SPEED) * percent;
+     * returns in RPM
+     */    
+    public double calcSpeedFromAngle() {
+    	double percent = 0.0;
+    	
+    	if(!whichDeg) {
+    		percent = getDistance() / (degOneDistanceMax - degOneDistanceMin);
+    		return (degOneSpeedMax - degOneSpeedMin) * percent;
+    	} else {
+    		percent = getDistance() / (degTwoDistanceMax - degTwoDistanceMin);
+    		return (degTwoSpeedMax - degTwoSpeedMin) * percent;    		
+    	}
     }
-    
-    
-    /*
-     * angleCalc()
-     * gets the distance from the camera and compares it to pre-recorded
-     * information(Max and Min shot data) to return the angle needed.
-     * 
-     * gets a percent:    % = d / (dMax - dMin)
-     * returns a speed: ang = (angMax - angMin) * %
-     */
-    public double angleCalc() {
-    	double percent = getDistance() / (MAX_DISTANCE - MIN_DISTANCE);
-    	return (MAX_ANGLE - MIN_ANGLE) * percent;
-    }
-    
 
     
     
@@ -372,7 +368,12 @@ public class Shooter extends Subsystem {
      * Network Tables
      */
 	public double getDistance() {
-    	return Robot.boilerTable.getNumber("distance", 0.0);
+		try {
+			return Robot.boilerTable.getNumber("distance", 0.0);
+		} catch(Exception e) {
+    		System.err.println("NetworkTables Error: Failed to get a value for 'distance' from 'boilerTable'");
+			return -1.0;
+		}
     }
     
     
@@ -382,7 +383,12 @@ public class Shooter extends Subsystem {
      * received from the Rasp PI through the Network Tables
      */
     public double getAngle() {
-    	return Robot.boilerTable.getNumber("angle", 0.0);
+    	try {
+    		return Robot.boilerTable.getNumber("angle", 0.0);
+    	} catch(Exception e) {
+    		System.err.println("NetworkTables Error: Failed to get a value for 'angle' from 'boilerTable'");
+    		return -1.0;
+    	}
     }
     
     
@@ -391,7 +397,12 @@ public class Shooter extends Subsystem {
      * returns true if the camera can see the target
      */
     public boolean getEyes() {
-    	return Robot.boilerTable.getBoolean("eyes", false);
+    	try {
+    		return Robot.boilerTable.getBoolean("eyes", false);
+    	} catch(Exception e) {
+    		System.err.println("NetworkTables Error: Failed to get a value for 'eyes' from 'boilerTable'");
+    		return false;
+    	}
     }
 }
 
