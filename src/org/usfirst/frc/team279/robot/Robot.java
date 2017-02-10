@@ -11,13 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import org.usfirst.frc.team279.robot.commands.*;
-import org.usfirst.frc.team279.robot.commands.AutoDriveFoward;
 import org.usfirst.frc.team279.robot.subsystems.*;
 import org.usfirst.frc.team279.util.Config;
 
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
-import org.usfirst.frc.team279.robot.commands.RotateAngleDegrees;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,6 +53,7 @@ public class Robot extends IterativeRobot {
 	//--------------------------------------------------------------------------
 	
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
+	public static final Shooter shooter = new Shooter();
 	public static final Ultrasonics ultrasonics = new Ultrasonics();
 	public static OI oi;
 	
@@ -73,18 +73,19 @@ public class Robot extends IterativeRobot {
 	
 
 	public void robotInit() {
-		
+
 		//Setup Tables for Vision
 		NetworkTable.initialize();
 		boilerTable = NetworkTable.getTable("Boiler");
 		gearTable   = NetworkTable.getTable("Gear");
 				
 		Robot.mecanumDrive.init();
+		Robot.shooter.init();
 		Robot.ultrasonics.init();
 		
 		oi = new OI();
 		oi.init();
-	
+
 		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
