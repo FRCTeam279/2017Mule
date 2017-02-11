@@ -74,27 +74,33 @@ public class Robot extends IterativeRobot {
 	
 
 	public void robotInit() {
+<<<<<<< HEAD
 		
 		Robot.mecanumDrive.init();
 		Robot.shooter.init();
 		Robot.ultrasonics.init();
 		Robot.geargizmo.init();
 
+=======
+>>>>>>> origin/master
 
 		//Setup Tables for Vision
 		NetworkTable.initialize();
 		boilerTable = NetworkTable.getTable("Boiler");
 		gearTable   = NetworkTable.getTable("Gear");
+				
+		Robot.mecanumDrive.init();
+		Robot.shooter.init();
+		Robot.ultrasonics.init();
 		
 		oi = new OI();
 		oi.init();
 
-
 		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
-		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
+		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
 		SmartDashboard.putData("Auto mode", chooser);
 		
 		
