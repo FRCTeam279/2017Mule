@@ -25,7 +25,7 @@ public class TestShot extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooter.shootPID(1000, .1, .1, .1);
+    	//Robot.shooter.shootPID(1000, .1, .1, .1);
     	//Robot.shooter.test(speed);
     	SmartDashboard.putNumber("Speed", Robot.shooter.getShooterController().getSpeed());
     }

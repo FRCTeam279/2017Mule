@@ -47,7 +47,7 @@ public class GearGizmo extends Subsystem {
 	public void init () {
 		//doorMotor = new Talon();
 		openDoorSwitch = new DigitalInput(5);
-		//closeDoorSwitch = new DigitalInput(9);
+		closeDoorSwitch = new DigitalInput(9);
 		//gearPositionSwitch = new DigitalInput();
 	}
 	
@@ -74,6 +74,7 @@ public class GearGizmo extends Subsystem {
 	public void stopDoor() {
 		doorMotor.stopMotor();
 	}
+	
 	//***ESTOP*****************************************************
 	public void stopAll() {
 		stopDoor();

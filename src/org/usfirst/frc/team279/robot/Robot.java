@@ -74,15 +74,12 @@ public class Robot extends IterativeRobot {
 	
 
 	public void robotInit() {
-<<<<<<< HEAD
 		
 		Robot.mecanumDrive.init();
 		Robot.shooter.init();
 		Robot.ultrasonics.init();
 		Robot.geargizmo.init();
 
-=======
->>>>>>> origin/master
 
 		//Setup Tables for Vision
 		NetworkTable.initialize();
