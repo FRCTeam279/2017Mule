@@ -1,8 +1,10 @@
 package org.usfirst.frc.team279.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class GearGizmo {
+public class GearGizmo extends Subsystem {
 	/* 
 	 * Objects:
 	 * VictorSP
@@ -25,13 +27,42 @@ public class GearGizmo {
 	private Talon doorMotor;
 	private final double DOOR_SPEED = 0;
 	
-	public void init () {
-		doorMotor = new Talon(0);
+	private DigitalInput openDoorSwitch;
+	public DigitalInput getOpenDoorSwitch() {
+		return openDoorSwitch;
 	}
 	
-
+	private DigitalInput closeDoorSwitch;
+	public DigitalInput getCloseDoorSwitch(){
+		return closeDoorSwitch;
+	}
 	
-	//***DOOR MOTOR***********************************************
+	private DigitalInput gearPositionSwitch;
+	public DigitalInput getGearPositionSwitch(){
+		return gearPositionSwitch;
+	}
+	
+	
+	
+	public void init () {
+		//doorMotor = new Talon();
+		openDoorSwitch = new DigitalInput(5);
+		//closeDoorSwitch = new DigitalInput(9);
+		//gearPositionSwitch = new DigitalInput();
+	}
+	
+	
+	
+	
+	//***LIMIT SWITCHES********************************************
+	
+	
+	
+	
+	
+	
+	
+	//***DOOR MOTOR************************************************
 	public void openDoor() {
 		doorMotor.set(DOOR_SPEED);
 	}
@@ -46,6 +77,15 @@ public class GearGizmo {
 	//***ESTOP*****************************************************
 	public void stopAll() {
 		stopDoor();
+	}
+
+
+
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

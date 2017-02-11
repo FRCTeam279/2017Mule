@@ -55,6 +55,7 @@ public class Robot extends IterativeRobot {
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
 	public static final Shooter shooter = new Shooter();
 	public static final Ultrasonics ultrasonics = new Ultrasonics();
+	public static final GearGizmo geargizmo = new GearGizmo();
 	public static OI oi;
 	
 	public static NetworkTable boilerTable;
@@ -77,6 +78,7 @@ public class Robot extends IterativeRobot {
 		Robot.mecanumDrive.init();
 		Robot.shooter.init();
 		Robot.ultrasonics.init();
+		Robot.geargizmo.init();
 
 
 		//Setup Tables for Vision
@@ -107,6 +109,8 @@ public class Robot extends IterativeRobot {
 	//--------------------------------------------------------------------------
 	@Override
 	public void robotPeriodic() {
+		System.out.println(geargizmo.getOpenDoorSwitch().get());
+		System.out.println(geargizmo.getCloseDoorSwitch().get());
 	}
 	
 
