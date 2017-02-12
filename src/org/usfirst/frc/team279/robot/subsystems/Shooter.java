@@ -82,7 +82,7 @@ public class Shooter extends Subsystem {
 	
 	//*** INIT *******************************************************
 	
-    public void init() {
+    public void init() throws RuntimeException {
     	
     	System.out.println("SH: Shooter Init Starting");
     	

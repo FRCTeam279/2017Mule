@@ -25,7 +25,7 @@ public class GearGizmo {
 	private Talon doorMotor;
 	private final double DOOR_SPEED = 0;
 	
-	public void init () {
+	public void init() throws RuntimeException {
 		doorMotor = new Talon(0);
 	}
 	

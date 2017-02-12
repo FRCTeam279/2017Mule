@@ -74,21 +74,25 @@ public class Robot extends IterativeRobot {
 
 	public void robotInit() {
 		
-		Robot.mecanumDrive.init();
-		Robot.shooter.init();
-		Robot.ultrasonics.init();
-
-
-		//Setup Tables for Vision
-		NetworkTable.initialize();
-		boilerTable = NetworkTable.getTable("Boiler");
-		gearTable   = NetworkTable.getTable("Gear");
-		
-		oi = new OI();
-		oi.init();
-
-
-		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
+		try {
+			Robot.mecanumDrive.init();
+			Robot.shooter.init();
+			Robot.ultrasonics.init();
+	
+	
+			//Setup Tables for Vision
+			NetworkTable.initialize();
+			boilerTable = NetworkTable.getTable("Boiler");
+			gearTable   = NetworkTable.getTable("Gear");
+			
+			oi = new OI();
+			oi.init();
+	
+	
+			Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
+		} catch(RuntimeException e) {
+			e.printStackTrace();
+		}
 		
 		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
 		chooser.addDefault("Default Auto", new DefaultAuto());
