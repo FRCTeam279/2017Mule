@@ -7,6 +7,7 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -78,6 +79,13 @@ public class Shooter extends Subsystem {
 	//CANTalon Encoder Invert
 	private boolean invertEncoder = true;
 	
+	//Ball Check Switch
+	private int     ballCheckPort = 9;
+	private DigitalInput ballCheckSwitch;
+	public DigitalInput getBallCheckSwitch() {
+		return ballCheckSwitch;
+	}
+	
 	
 	
 	//*** INIT *******************************************************
@@ -95,6 +103,9 @@ public class Shooter extends Subsystem {
     	
     	shooterConfig();
 		System.out.println("SH: Shooter Config Loaded");
+		
+		ballCheckSwitch = new DigitalInput(ballCheckPort);
+		System.out.println("SH: Feeder Config Loaded");
     }
 
     
@@ -113,6 +124,7 @@ public class Shooter extends Subsystem {
 		
 		shooterPort   = c.load(prefPrefix + "shooterPort", shooterPort);
 		feedPort      = c.load(prefPrefix + "feedPort", feedPort);
+		ballCheckPort = c.load(prefPrefix + "ballCheckPort", ballCheckPort);
 		invertShooter = c.load(prefPrefix + "invertShooter", invertShooter);
 		invertFeed    = c.load(prefPrefix + "invertFeed", invertFeed);
 		invertEncoder = c.load(prefPrefix + "invertEncoder", invertEncoder);
