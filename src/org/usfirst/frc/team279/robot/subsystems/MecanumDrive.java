@@ -24,7 +24,7 @@ public class MecanumDrive extends Subsystem {
 	}
 	
 	
-	private int encoderLeftFrontPortA = 99;
+	private int encoderLeftFrontPortA = 5;
 	private int encoderLeftFrontPortB = 6;
 	private int encoderRightFrontPortA = 7;
 	private int encoderRightFrontPortB = 8;

@@ -86,10 +86,6 @@ public class Robot extends IterativeRobot {
 		boilerTable = NetworkTable.getTable("Boiler");
 		gearTable   = NetworkTable.getTable("Gear");
 				
-		Robot.mecanumDrive.init();
-		Robot.shooter.init();
-		Robot.ultrasonics.init();
-		
 		oi = new OI();
 		oi.init();
 
@@ -112,8 +108,8 @@ public class Robot extends IterativeRobot {
 	//--------------------------------------------------------------------------
 	@Override
 	public void robotPeriodic() {
-		System.out.println(geargizmo.getOpenDoorSwitch().get());
-		System.out.println(geargizmo.getCloseDoorSwitch().get());
+		//System.out.println(geargizmo.getOpenDoorSwitch().get());
+		//System.out.println(geargizmo.getCloseDoorSwitch().get());
 	}
 	
 
