@@ -75,20 +75,16 @@ public class Robot extends IterativeRobot {
 
 	public void robotInit() {
 		
-		Robot.mecanumDrive.init();
-		Robot.shooter.init();
+		//Robot.mecanumDrive.init();
+		//Robot.shooter.init();
 		Robot.ultrasonics.init();
-		Robot.geargizmo.init();
+		//Robot.geargizmo.init();
 
 
 		//Setup Tables for Vision
 		NetworkTable.initialize();
 		boilerTable = NetworkTable.getTable("Boiler");
 		gearTable   = NetworkTable.getTable("Gear");
-				
-		Robot.mecanumDrive.init();
-		Robot.shooter.init();
-		Robot.ultrasonics.init();
 		
 		oi = new OI();
 		oi.init();
@@ -104,6 +100,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Start Ultrasonics",new StartUltrasonicsThread());
 		SmartDashboard.putData("Stop Ultrasonics",new StopUltrasonicsThread());
 		SmartDashboard.putData("Get Gear Distances",new DisplayGearRanges());
+		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(10,11));
+		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(12,13));
 		
 		SmartDashboard.putData("Save Config",new SaveConfig());
 	}
@@ -112,8 +110,7 @@ public class Robot extends IterativeRobot {
 	//--------------------------------------------------------------------------
 	@Override
 	public void robotPeriodic() {
-		System.out.println(geargizmo.getOpenDoorSwitch().get());
-		System.out.println(geargizmo.getCloseDoorSwitch().get());
+		
 	}
 	
 

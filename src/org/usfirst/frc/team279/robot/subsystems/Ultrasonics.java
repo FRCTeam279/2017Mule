@@ -20,10 +20,10 @@ public class Ultrasonics extends Subsystem {
 
 	private boolean enabled = false;
 		
-	private int rangeGearLeftTrig = 0;
-	private int rangeGearLeftEcho = 1;
-	private int rangeGearRightTrig = 2;
-	private int rangeGearRightEcho = 3;
+	private int rangeGearLeftTrig = 10;
+	private int rangeGearLeftEcho = 11;
+	private int rangeGearRightTrig = 12;
+	private int rangeGearRightEcho = 13;
 	
 	
 	public void loadPrefs(){
