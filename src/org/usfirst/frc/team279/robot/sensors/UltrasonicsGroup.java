@@ -79,6 +79,21 @@ public class UltrasonicsGroup {
 		t.enabled = false;
 	}
 	
+	
+	public synchronized double getDistanceFeet(String label){
+		return ultrasonics.get(label).getDistanceFeet();
+	}	
+	public synchronized double getDistanceInches(String label){
+			return ultrasonics.get(label).getDistanceInches();
+	}
+	public synchronized double getDistanceMeters(String label){
+		return ultrasonics.get(label).getDistanceMeters();
+	}
+	public synchronized double getDistanceMillimeters(String label){
+		return ultrasonics.get(label).getDistanceMillimeters();
+	}
+	
+	
 	public synchronized UltrasonicReading getReading(String label){
 		if(ultrasonics.containsKey(label)) {
 			Ultrasonic u = ultrasonics.get(label);
@@ -96,28 +111,28 @@ public class UltrasonicsGroup {
 			if(pulseTime > 0.0) {
 				return pulseTime * SPEED_OF_SOUND_FPS / 2.0;
 			} else {
-				return -1.0;
+				return pulseTime;
 			}
 		}
 		public double getDistanceInches(){
 			if(pulseTime > 0.0) {
 				return pulseTime * SPEED_OF_SOUND_IPS / 2.0;
 			} else {
-				return -1.0;
+				return pulseTime;
 			}
 		}
 		public double getDistanceMeters(){
 			if(pulseTime > 0.0) {
 				return pulseTime * SPEED_OF_SOUND_MPS / 2.0;
 			} else {
-				return -1.0;
+				return pulseTime;
 			}
 		}
 		public double getDistanceMillimeters(){
 			if(pulseTime > 0.0) {
 				return pulseTime * SPEED_OF_SOUND_MMPS / 2.0;
 			} else {
-				return -1.0;
+				return pulseTime;
 			}
 		}
 		

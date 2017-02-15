@@ -80,7 +80,7 @@ public class OI {
 		}
 		
 		try{
-			rightDriverStick = new Joystick(rightDriverStickPort);
+			rightDriverStick = new Attack3Joystick(rightDriverStickPort);
 		} catch (Exception e) {
 			System.out.println("OI: Error instantiating rightDriverStick: " + e.getMessage());
 		}

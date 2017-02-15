@@ -55,6 +55,7 @@ public class Robot extends IterativeRobot {
 	public static final MecanumDrive mecanumDrive = new MecanumDrive();
 	public static final Shooter shooter = new Shooter();
 	public static final Ultrasonics ultrasonics = new Ultrasonics();
+	public static final GearGizmo geargizmo = new GearGizmo();
 	public static OI oi;
 	
 	public static NetworkTable boilerTable;
@@ -76,8 +77,9 @@ public class Robot extends IterativeRobot {
 		
 		try {
 			Robot.mecanumDrive.init();
-			Robot.shooter.init();
-			Robot.ultrasonics.init();
+			//Robot.shooter.init();
+			//Robot.ultrasonics.init();
+			Robot.geargizmo.init();
 	
 	
 			//Setup Tables for Vision
@@ -94,15 +96,20 @@ public class Robot extends IterativeRobot {
 			e.printStackTrace();
 		}
 		
-		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
+		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
 		SmartDashboard.putData("Auto mode", chooser);
 		
 		
 		SmartDashboard.putData("Start Ultrasonics",new StartUltrasonicsThread());
 		SmartDashboard.putData("Stop Ultrasonics",new StopUltrasonicsThread());
 		SmartDashboard.putData("Get Gear Distances",new DisplayGearRanges());
+		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(10,11));
+		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(12,13));
+		
+		SmartDashboard.putData("Open Door", new OpenGearDoor());
+		SmartDashboard.putData("Close Door", new CloseGearDoor());
 		
 		SmartDashboard.putData("Save Config",new SaveConfig());
 	}
@@ -110,7 +117,8 @@ public class Robot extends IterativeRobot {
 	
 	//--------------------------------------------------------------------------
 	@Override
-	public void robotPeriodic() {
+	public void robotPeriodic() {	
+
 	}
 	
 

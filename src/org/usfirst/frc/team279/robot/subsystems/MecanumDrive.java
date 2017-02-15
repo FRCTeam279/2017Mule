@@ -132,10 +132,10 @@ public class MecanumDrive extends Subsystem {
 		roboDrive.setInvertedMotor(MotorType.kRearLeft, invertLeftRear);
 		roboDrive.setInvertedMotor(MotorType.kRearRight, invertRightRear);
 
-		encoderLeftFront = new Encoder(5,6);
-		encoderRightFront = new Encoder(7,8);
-		encoderLeftRear = new Encoder(9,10);
-		encoderRightRear = new Encoder(11,12);
+//		encoderLeftFront = new Encoder(5,6);
+//		encoderRightFront = new Encoder(7,8);
+//		encoderLeftRear = new Encoder(9,10);
+//		encoderRightRear = new Encoder(11,12);
 
 		System.out.println("MD: MechenumDrive Init Complete");	
 	}

@@ -1,52 +1,115 @@
 package org.usfirst.frc.team279.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Talon;
+import org.usfirst.frc.team279.util.Config;
 
-public class GearGizmo {
-	/* 
-	 * Objects:
-	 * VictorSP
-	 * ULtrasonic
-	 * Limit Switches 
-	 */
+import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+public class GearGizmo extends Subsystem {
 	
-	/*
-	 * Functions:
-	 * Open doors
-	 * Close doors
-	 * Detect distance from pole
-	 * Use limit switches for doors and gear position
-	 * 
-	 * Use limit switches for when door is open and door is closed
-	 * Use a limit switch for gear's position in holder
-	 * Use motor for opening and closing door
-	 * Use network tables for distance and angle for peg
-	 */
+	private String prefPrefix = "gg_";
+
+	private int doorMotorPort = 4;
+	private int openDoorSwitchPort = 7;
+	private int closeDoorSwitchPort = 6;
+//	private int gearPosSwitchPort = 0;	
+	
 	private Talon doorMotor;
-	private final double DOOR_SPEED = 0;
+	private double doorSpeed = 0;
 	
-	public void init() throws RuntimeException {
-		doorMotor = new Talon(0);
+	private DigitalInput openDoorSwitch;
+	public DigitalInput getOpenDoorSwitch() {
+		return openDoorSwitch;
 	}
 	
-
+	private DigitalInput closeDoorSwitch;
+	public DigitalInput getCloseDoorSwitch(){
+		return closeDoorSwitch;
+	}
 	
-	//***DOOR MOTOR***********************************************
+	private DigitalInput gearPositionSwitch;
+	public DigitalInput getGearPositionSwitch(){
+		return gearPositionSwitch;
+	}
+	
+	private Counter openDoorCounter;
+	private Counter closeDoorCounter;
+//	private Counter gearPosCounter;
+	
+	private boolean invertDoorMotor = false;
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void init() throws RuntimeException {
+		
+		loadPrefs();
+		System.out.println("GG: Preferences loaded");
+		
+		doorMotor = new Talon(doorMotorPort);
+		doorMotor.setInverted(invertDoorMotor);
+		System.out.println("GG: Speed Controllers Configured");
+		
+		openDoorSwitch = new DigitalInput(openDoorSwitchPort);
+		openDoorCounter = new Counter(openDoorSwitch);
+		
+		closeDoorSwitch = new DigitalInput(closeDoorSwitchPort);
+		closeDoorCounter = new Counter(closeDoorSwitch);
+		System.out.println("GG: Limit Switches Setup");
+	}
+	
+	public void loadPrefs() {
+		Config c = new Config();
+		
+		doorSpeed              = c.load(prefPrefix + "doorSpeed", doorSpeed);
+		doorMotorPort          = c.load(prefPrefix + "doorMotorPort", doorMotorPort);
+		openDoorSwitchPort     = c.load(prefPrefix + "openDoorSwitchPort", openDoorSwitchPort);
+		closeDoorSwitchPort    = c.load(prefPrefix + "closeDoorSwitchPort", closeDoorSwitchPort);
+		invertDoorMotor        = c.load(prefPrefix + "invertDoorMotor", invertDoorMotor);
+//		gearPosSwitchPort = c.load(prefPrefix + "gearPositionSwitchPort", gearPosSwitchPort);
+	}
+	
+	
+	//***DOOR MOTOR************************************************
 	public void openDoor() {
-		doorMotor.set(DOOR_SPEED);
+		doorMotor.set(doorSpeed);
 	}
 	
 	public void closeDoor () {
-		doorMotor.set(-DOOR_SPEED);
+		doorMotor.set(-doorSpeed);
 	}
 	
 	public void stopDoor() {
 		doorMotor.stopMotor();
 	}
+	
+	
+	//***DOOR SWITCHES*********************************************
+	public boolean getOpenCount() {
+		return openDoorCounter.get() > 0;
+	}
+	
+	public boolean getCloseCount() {
+		return closeDoorCounter.get() > 0;
+	}
+	
+	public void resetOpenSwitch() {
+		openDoorCounter.reset();
+	}
+	
+	public void resetCloseSwitch() {
+		closeDoorCounter.reset();
+	}
+	
+	
 	//***ESTOP*****************************************************
 	public void stopAll() {
 		stopDoor();
-	}
-	
+	}	
 }
 
