@@ -22,7 +22,7 @@ public class FeedAndShoot extends Command {
 
     protected void initialize() {
     	cT = System.currentTimeMillis();
-    	sT =cT;
+    	sT = cT;
     }
 
     // Called repeatedly when this Command is scheduled to run

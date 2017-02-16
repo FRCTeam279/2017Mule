@@ -77,8 +77,8 @@ public class Robot extends IterativeRobot {
 		
 		try {
 			Robot.mecanumDrive.init();
-			//Robot.shooter.init();
-			//Robot.ultrasonics.init();
+			Robot.shooter.init();
+			Robot.ultrasonics.init();
 			Robot.geargizmo.init();
 	
 	
