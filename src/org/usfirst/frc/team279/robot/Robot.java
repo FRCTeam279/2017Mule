@@ -74,22 +74,27 @@ public class Robot extends IterativeRobot {
 	
 
 	public void robotInit() {
-		
-		//Robot.mecanumDrive.init();
-		//Robot.shooter.init();
-		Robot.ultrasonics.init();
-		//Robot.geargizmo.init();
 
-
-		//Setup Tables for Vision
-		NetworkTable.initialize();
-		boilerTable = NetworkTable.getTable("Boiler");
-		gearTable   = NetworkTable.getTable("Gear");
-
-		oi = new OI();
-		oi.init();
-
-		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
+		try {
+			Robot.mecanumDrive.init();
+			Robot.shooter.init();
+			Robot.ultrasonics.init();
+			Robot.geargizmo.init();
+	
+	
+			//Setup Tables for Vision
+			NetworkTable.initialize();
+			boilerTable = NetworkTable.getTable("Boiler");
+			gearTable   = NetworkTable.getTable("Gear");
+			
+			oi = new OI();
+			oi.init();
+	
+	
+			Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
+		} catch(RuntimeException e) {
+			e.printStackTrace();
+		}
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
@@ -103,18 +108,17 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(10,11));
 		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(12,13));
 		
+		SmartDashboard.putData("Open Door", new OpenGearDoor());
+		SmartDashboard.putData("Close Door", new CloseGearDoor());
+		
 		SmartDashboard.putData("Save Config",new SaveConfig());
 	}
 
 	
 	//--------------------------------------------------------------------------
 	@Override
-	public void robotPeriodic() {
+	public void robotPeriodic() {	
 
-		//System.out.println(geargizmo.getOpenDoorSwitch().get());
-		//System.out.printl	n(geargizmo.getCloseDoorSwitch().get());
-
-		
 
 	}
 	
