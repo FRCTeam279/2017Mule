@@ -112,7 +112,7 @@ public class Robot extends IterativeRobot {
 	public void robotPeriodic() {
 
 		//System.out.println(geargizmo.getOpenDoorSwitch().get());
-		//System.out.println(geargizmo.getCloseDoorSwitch().get());
+		//System.out.printl	n(geargizmo.getCloseDoorSwitch().get());
 
 		
 
