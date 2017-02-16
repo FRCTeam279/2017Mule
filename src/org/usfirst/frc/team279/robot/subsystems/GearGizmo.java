@@ -10,10 +10,10 @@ public class GearGizmo extends Subsystem {
 	
 	private String prefPrefix = "gg_";
 
-	private int doorMotorPort = 0;
+	private int doorMotorPort = 4;
 	private int openDoorSwitchPort = 8;
 	private int closeDoorSwitchPort = 9;
-	private int gearPositionSwitchPort = 0;
+	private int gearPositionSwitchPort = 4;
 	
 	
 	

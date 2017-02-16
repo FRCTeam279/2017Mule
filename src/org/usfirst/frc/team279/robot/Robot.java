@@ -75,10 +75,10 @@ public class Robot extends IterativeRobot {
 
 	public void robotInit() {
 		
-		//Robot.mecanumDrive.init();
-		//Robot.shooter.init();
+		Robot.mecanumDrive.init();
+		Robot.shooter.init();
 		Robot.ultrasonics.init();
-		//Robot.geargizmo.init();
+		Robot.geargizmo.init();
 
 
 		//Setup Tables for Vision

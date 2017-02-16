@@ -15,7 +15,7 @@ public class UltrasonicsGroup {
 	public static final double SPEED_OF_SOUND_MPS = 343.21;	 						//meters per second
 	public static final double SPEED_OF_SOUND_MMPS = SPEED_OF_SOUND_MPS * 1000;	 	//meters per second
 	public static final double SPEED_OF_SOUND_FPS = 1126.017;						//feet per second	
-	public static final double SPEED_OF_SOUND_IPS = 1126.017 * 12;					//inches per second
+	public static final double SPEED_OF_SOUND_IPS = SPEED_OF_SOUND_FPS * 12;		//inches per second
 	
 	private double pingTime = 10 * 1e-6;
 	

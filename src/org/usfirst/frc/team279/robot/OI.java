@@ -59,7 +59,7 @@ public class OI {
 		return goControllerNullZone;
 	}
 	
-	public JoystickButton resetGyroBtn = new JoystickButton(rightDriverStick, 2);
+	public JoystickButton resetGyroBtn;
 	
 	//--------------------------------------------------------------------------
 	public void readConfig(){
