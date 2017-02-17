@@ -1,5 +1,6 @@
 package org.usfirst.frc.team279.robot.subsystems;
 
+import org.usfirst.frc.team279.robot.Robot;
 import org.usfirst.frc.team279.util.Config;
 
 import edu.wpi.first.wpilibj.Counter;
@@ -36,7 +37,6 @@ public class GearGizmo extends Subsystem {
 	
 	private Counter openDoorCounter;
 	private Counter closeDoorCounter;
-//	private Counter gearPosCounter;
 	
 	private boolean invertDoorMotor = false;
 
@@ -71,7 +71,6 @@ public class GearGizmo extends Subsystem {
 		openDoorSwitchPort     = c.load(prefPrefix + "openDoorSwitchPort", openDoorSwitchPort);
 		closeDoorSwitchPort    = c.load(prefPrefix + "closeDoorSwitchPort", closeDoorSwitchPort);
 		invertDoorMotor        = c.load(prefPrefix + "invertDoorMotor", invertDoorMotor);
-//		gearPosSwitchPort = c.load(prefPrefix + "gearPositionSwitchPort", gearPosSwitchPort);
 	}
 	
 	
@@ -111,5 +110,59 @@ public class GearGizmo extends Subsystem {
 	public void stopAll() {
 		stopDoor();
 	}	
+	
+//*** VISION GETTER'S ********************************************
+    
+    /**
+     * Updates the Distance from the camera to the gear peg 
+     * based on the information received from the Rasp PI through the
+     * Network Tables
+     * 
+     * If {@value -1.0} is returned then an error occurred while
+     * retrieving the value.
+     * 
+     * @return Distance from the camera to the target
+     */
+	public double getDistance() {
+		try {
+			return Robot.gearTable.getNumber("distance", 0.0);
+		} catch(Exception e) {
+    		System.err.println("NetworkTables Error: Failed to get a value for 'distance' from 'boilerTable'");
+			return -1.0;
+		}
+    }
+    
+    
+    /**
+     * Updates the Rotation Angle of the robot based on the information
+     * received from the Rasp PI through the Network Tables
+     * 
+     * If {@value -1.0} is returned then an error occurred while
+     * retrieving the value.
+     * 
+     * @return Horz. Angle from the front of the camera to the target
+     */
+    public double getAngle() {
+    	try {
+    		return Robot.gearTable.getNumber("angle", 0.0);
+    	} catch(Exception e) {
+    		System.err.println("NetworkTables Error: Failed to get a value for 'angle' from 'boilerTable'");
+    		return -1.0;
+    	}
+    }
+    
+    
+    /**
+     * Tells you if the camera sees the target
+     * @return True if target is seen, False if target is not seen
+     */
+    public boolean getEyes() {
+    	try {
+    		return Robot.gearTable.getBoolean("eyes", false);
+    	} catch(Exception e) {
+    		System.err.println("NetworkTables Error: Failed to get a value for 'eyes' from 'boilerTable'");
+    		return false;
+    	}
+    }
 }
 
