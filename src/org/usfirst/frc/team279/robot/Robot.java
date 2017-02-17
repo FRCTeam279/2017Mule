@@ -56,6 +56,7 @@ public class Robot extends IterativeRobot {
 	public static final Shooter shooter = new Shooter();
 	public static final Ultrasonics ultrasonics = new Ultrasonics();
 	public static final GearGizmo geargizmo = new GearGizmo();
+	
 	public static OI oi;
 	
 	public static NetworkTable boilerTable;
@@ -71,30 +72,50 @@ public class Robot extends IterativeRobot {
 		ahrsGyroAdjustment = c.load(prefPrefix + "ahrsGyroAdjustment", ahrsGyroAdjustment);
 	}
 	
-	
 
 	public void robotInit() {
 
+		//Subsystem Init's -- Start
 		try {
 			Robot.mecanumDrive.init();
+		} catch(RuntimeException e) {
+			DriverStation.reportError("Robot: Error instantiating MecanumDrive:  " + e.getMessage(), true);
+		}
+		
+		try {
 			Robot.shooter.init();
+		} catch(RuntimeException e) {
+			DriverStation.reportError("Robot: Error instantiating Shooter:  " + e.getMessage(), true);
+		}
+		
+		try {
 			Robot.ultrasonics.init();
+		} catch(RuntimeException e) {
+			DriverStation.reportError("Robot: Error instantiating Ultrasonics:  " + e.getMessage(), true);
+		}
+		
+		try {
 			Robot.geargizmo.init();
+		} catch(RuntimeException e) {
+			DriverStation.reportError("Robot: Error instantiating GearGizmo:  " + e.getMessage(), true);
+		}
+		//Subsystem Init's -- End
 	
 	
+		try {
 			//Setup Tables for Vision
 			NetworkTable.initialize();
 			boilerTable = NetworkTable.getTable("Boiler");
 			gearTable   = NetworkTable.getTable("Gear");
-			
-			oi = new OI();
-			oi.init();
-	
-	
-			Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
-		} catch(RuntimeException e) {
-			e.printStackTrace();
+		} catch(Exception e) {
+			DriverStation.reportError("Robot: Error instantiating NetworkTables:  " + e.getMessage(), true);
 		}
+		
+		oi = new OI();
+		oi.init();
+	
+	
+		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
