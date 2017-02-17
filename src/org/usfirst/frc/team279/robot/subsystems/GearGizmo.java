@@ -2,6 +2,7 @@ package org.usfirst.frc.team279.robot.subsystems;
 
 import org.usfirst.frc.team279.util.Config;
 
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -10,15 +11,11 @@ public class GearGizmo extends Subsystem {
 	
 	private String prefPrefix = "gg_";
 
-	private int doorMotorPort = 0;
-	private int openDoorSwitchPort = 8;
-	private int closeDoorSwitchPort = 9;
-	private int gearPositionSwitchPort = 0;
-	
-	
-	
-	
-	
+	private int doorMotorPort = 4;
+
+	private int openDoorSwitchPort = 7;
+	private int closeDoorSwitchPort = 6;
+
 	private Talon doorMotor;
 	private double doorSpeed = 0;
 	
@@ -37,18 +34,34 @@ public class GearGizmo extends Subsystem {
 		return gearPositionSwitch;
 	}
 	
+	private Counter openDoorCounter;
+	private Counter closeDoorCounter;
+//	private Counter gearPosCounter;
 	
-	
-	public void init () {
-		//doorMotor = new Talon();
-		openDoorSwitch = new DigitalInput(8);
-		closeDoorSwitch = new DigitalInput(9);
-		//gearPositionSwitch = new DigitalInput();
-		loadPrefs();
+	private boolean invertDoorMotor = false;
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 	
-	
-	
+	public void init() throws RuntimeException {
+		
+		loadPrefs();
+		System.out.println("GG: Preferences loaded");
+		
+		doorMotor = new Talon(doorMotorPort);
+		doorMotor.setInverted(invertDoorMotor);
+		System.out.println("GG: Speed Controllers Configured");
+		
+		openDoorSwitch = new DigitalInput(openDoorSwitchPort);
+		openDoorCounter = new Counter(openDoorSwitch);
+		
+		closeDoorSwitch = new DigitalInput(closeDoorSwitchPort);
+		closeDoorCounter = new Counter(closeDoorSwitch);
+		System.out.println("GG: Limit Switches Setup");
+	}
 	
 	public void loadPrefs() {
 		Config c = new Config();
@@ -57,13 +70,9 @@ public class GearGizmo extends Subsystem {
 		doorMotorPort          = c.load(prefPrefix + "doorMotorPort", doorMotorPort);
 		openDoorSwitchPort     = c.load(prefPrefix + "openDoorSwitchPort", openDoorSwitchPort);
 		closeDoorSwitchPort    = c.load(prefPrefix + "closeDoorSwitchPort", closeDoorSwitchPort);
-		gearPositionSwitchPort = c.load(prefPrefix + "gearPositionSwitchPort", gearPositionSwitchPort);
+		invertDoorMotor        = c.load(prefPrefix + "invertDoorMotor", invertDoorMotor);
+//		gearPosSwitchPort = c.load(prefPrefix + "gearPositionSwitchPort", gearPosSwitchPort);
 	}
-	
-	
-	
-	
-	
 	
 	
 	//***DOOR MOTOR************************************************
@@ -79,19 +88,28 @@ public class GearGizmo extends Subsystem {
 		doorMotor.stopMotor();
 	}
 	
+	
+	//***DOOR SWITCHES*********************************************
+	public boolean getOpenCount() {
+		return openDoorCounter.get() > 0;
+	}
+	
+	public boolean getCloseCount() {
+		return closeDoorCounter.get() > 0;
+	}
+	
+	public void resetOpenSwitch() {
+		openDoorCounter.reset();
+	}
+	
+	public void resetCloseSwitch() {
+		closeDoorCounter.reset();
+	}
+	
+	
 	//***ESTOP*****************************************************
 	public void stopAll() {
 		stopDoor();
-	}
-
-
-
-
-	@Override
-	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
-	}
-	
+	}	
 }
 

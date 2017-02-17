@@ -56,6 +56,7 @@ public class Robot extends IterativeRobot {
 	public static final Shooter shooter = new Shooter();
 	public static final Ultrasonics ultrasonics = new Ultrasonics();
 	public static final GearGizmo geargizmo = new GearGizmo();
+	
 	public static OI oi;
 	
 	public static NetworkTable boilerTable;
@@ -71,24 +72,49 @@ public class Robot extends IterativeRobot {
 		ahrsGyroAdjustment = c.load(prefPrefix + "ahrsGyroAdjustment", ahrsGyroAdjustment);
 	}
 	
-	
 
 	public void robotInit() {
+
+		//Subsystem Init's -- Start
+		try {
+			Robot.mecanumDrive.init();
+		} catch(RuntimeException e) {
+			DriverStation.reportError("Robot: Error instantiating MecanumDrive:  " + e.getMessage(), true);
+		}
 		
-		//Robot.mecanumDrive.init();
-		//Robot.shooter.init();
-		Robot.ultrasonics.init();
-		//Robot.geargizmo.init();
-
-
-		//Setup Tables for Vision
-		NetworkTable.initialize();
-		boilerTable = NetworkTable.getTable("Boiler");
-		gearTable   = NetworkTable.getTable("Gear");
-
+		try {
+			Robot.shooter.init();
+		} catch(RuntimeException e) {
+			DriverStation.reportError("Robot: Error instantiating Shooter:  " + e.getMessage(), true);
+		}
+		
+		try {
+			Robot.ultrasonics.init();
+		} catch(RuntimeException e) {
+			DriverStation.reportError("Robot: Error instantiating Ultrasonics:  " + e.getMessage(), true);
+		}
+		
+		try {
+			Robot.geargizmo.init();
+		} catch(RuntimeException e) {
+			DriverStation.reportError("Robot: Error instantiating GearGizmo:  " + e.getMessage(), true);
+		}
+		//Subsystem Init's -- End
+	
+	
+		try {
+			//Setup Tables for Vision
+			NetworkTable.initialize();
+			boilerTable = NetworkTable.getTable("Boiler");
+			gearTable   = NetworkTable.getTable("Gear");
+		} catch(Exception e) {
+			DriverStation.reportError("Robot: Error instantiating NetworkTables:  " + e.getMessage(), true);
+		}
+		
 		oi = new OI();
 		oi.init();
-
+	
+	
 		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
@@ -103,18 +129,17 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(10,11));
 		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(12,13));
 		
+		SmartDashboard.putData("Open Door", new OpenGearDoor());
+		SmartDashboard.putData("Close Door", new CloseGearDoor());
+		
 		SmartDashboard.putData("Save Config",new SaveConfig());
 	}
 
 	
 	//--------------------------------------------------------------------------
 	@Override
-	public void robotPeriodic() {
+	public void robotPeriodic() {	
 
-		//System.out.println(geargizmo.getOpenDoorSwitch().get());
-		//System.out.println(geargizmo.getCloseDoorSwitch().get());
-
-		
 
 	}
 	

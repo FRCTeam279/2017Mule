@@ -3,7 +3,6 @@ package org.usfirst.frc.team279.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
-import edu.wpi.first.wpilibj.Ultrasonic;
 
 import javax.print.attribute.standard.MediaSize.Other;
 
@@ -83,7 +82,10 @@ public class MecanumDrive extends Subsystem {
 		return encoderRightRear;
 	}
 		
-	
+	private boolean invertLeftFrontEnc = false;
+	private boolean invertRightFrontEnc = true;
+	private boolean invertLeftRearEnc = false;
+	private boolean invertRightRearEnc = true;
 	
 	public void loadPrefs(){
 		Config c = new Config();
@@ -112,7 +114,7 @@ public class MecanumDrive extends Subsystem {
 	}
 
 	
-	public void init(){
+	public void init() throws RuntimeException {
 		System.out.println("MD: MechenumDrive Init Starting");
 		
 		loadPrefs();
@@ -137,6 +139,24 @@ public class MecanumDrive extends Subsystem {
 		roboDrive.setInvertedMotor(MotorType.kRearLeft, invertLeftRear);
 		roboDrive.setInvertedMotor(MotorType.kRearRight, invertRightRear);
 
+
+		//encoderLeftFront = new Encoder(encoderLeftFrontPortA,encoderLeftFrontPortB);
+		//encoderRightFront = new Encoder(encoderRightFrontPortA,encoderRightFrontPortB);
+		//encoderLeftRear = new Encoder(encoderLeftRearPortA,encoderLeftRearPortB);
+		//encoderRightRear = new Encoder(encoderRightRearPortA,encoderRightRearPortB);
+		
+		//encoderLeftFront.setReverseDirection(invertLeftFrontEnc);
+		//encoderRightFront.setReverseDirection(invertRightFrontEnc);
+		//encoderLeftRear.setReverseDirection(invertLeftRearEnc);
+		//encoderRightRear.setReverseDirection(invertRightRearEnc);
+		
+		//double dpp = Math.PI * wheelDiameterInches / encoderPulseCount;
+		//encoderLeftFront.setDistancePerPulse(dpp);
+		//encoderLeftRear.setDistancePerPulse(dpp);
+		//encoderRightFront.setDistancePerPulse(dpp);
+		//encoderRightRear.setDistancePerPulse(dpp);
+		//System.out.println("MD: Calculated distance per pulse = " + dpp);	
+		
 		System.out.println("MD: MechenumDrive Init Complete");	
 	}
 	

@@ -33,7 +33,7 @@ public class RotateAngleDegrees extends Command {
 	
 	private RobotDrive roboDrive;
 
-	//True = Cw Flase = ccw
+	//True = Cw ... False = ccw
 	private boolean  turnDirection = true; 
 			
 	private double targetHeading = 0.0;

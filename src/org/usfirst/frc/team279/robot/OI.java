@@ -59,8 +59,8 @@ public class OI {
 		return goControllerNullZone;
 	}
 	
-	public JoystickButton resetGyroBtn = new JoystickButton(rightDriverStick, 2);
-	public JoystickButton vectoredDriveBtn = new JoystickButton(rightDriverStick, 1);
+	public JoystickButton vectoredDriveBtn;
+	public JoystickButton resetGyroBtn;
 	
 	//--------------------------------------------------------------------------
 	public void readConfig(){
