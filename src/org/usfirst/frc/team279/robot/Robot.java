@@ -93,7 +93,7 @@ public class Robot extends IterativeRobot {
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
 		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
-		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
+		chooser.addObject("AutoDriveForward", new AutoDriveFoward(2000, 0.5));
 		SmartDashboard.putData("Auto mode", chooser);
 		
 		

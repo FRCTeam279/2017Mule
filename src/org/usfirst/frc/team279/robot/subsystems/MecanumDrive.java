@@ -24,14 +24,14 @@ public class MecanumDrive extends Subsystem {
 	}
 	
 	
-	private int encoderLeftFrontPortA = 5;
-	private int encoderLeftFrontPortB = 6;
-	private int encoderRightFrontPortA = 7;
-	private int encoderRightFrontPortB = 8;
-	private int encoderLeftRearPortA = 9;
-	private int encoderLeftRearPortB = 10;
-	private int encoderRightRearPortA = 11;
-	private int encoderRightRearPortB = 12;
+	private int encoderLeftFrontPortA = 0;
+	private int encoderLeftFrontPortB = 1;
+	private int encoderRightFrontPortA = 4;
+	private int encoderRightFrontPortB = 5;
+	private int encoderLeftRearPortA = 2;
+	private int encoderLeftRearPortB = 3;
+	private int encoderRightRearPortA = 6;
+	private int encoderRightRearPortB = 7;
 	
 	//The preferencesPrefix will be prepended to the preferences loaded from the Robot Preferences
 	private String prefPrefix = "md_";
@@ -123,6 +123,11 @@ public class MecanumDrive extends Subsystem {
 		leftRearSpeedCtrl = new VictorSP(leftRearSpeedCtrlPort);
 		rightRearSpeedCtrl = new VictorSP(rightRearSpeedCtrlPort);
 		
+		encoderLeftFront = new Encoder(0,1);
+		encoderRightFront = new Encoder(4,5);
+		encoderLeftRear = new Encoder(2,3);
+		encoderRightRear = new Encoder(6,7);
+		
 		roboDrive = new RobotDrive(leftFrontSpeedCtrl, leftRearSpeedCtrl, rightFrontSpeedCtrl, rightRearSpeedCtrl);
 		roboDrive.setSafetyEnabled(false);
 		//roboDrive.setExpiration(0.5);
@@ -131,11 +136,6 @@ public class MecanumDrive extends Subsystem {
 		roboDrive.setInvertedMotor(MotorType.kFrontRight, invertRightFront);
 		roboDrive.setInvertedMotor(MotorType.kRearLeft, invertLeftRear);
 		roboDrive.setInvertedMotor(MotorType.kRearRight, invertRightRear);
-
-//		encoderLeftFront = new Encoder(5,6);
-//		encoderRightFront = new Encoder(7,8);
-//		encoderLeftRear = new Encoder(9,10);
-//		encoderRightRear = new Encoder(11,12);
 
 		System.out.println("MD: MechenumDrive Init Complete");	
 	}

@@ -60,6 +60,7 @@ public class OI {
 	}
 	
 	public JoystickButton resetGyroBtn = new JoystickButton(rightDriverStick, 2);
+	public JoystickButton vectoredDriveBtn = new JoystickButton(rightDriverStick, 1);
 	
 	//--------------------------------------------------------------------------
 	public void readConfig(){
@@ -80,7 +81,7 @@ public class OI {
 		}
 		
 		try{
-			rightDriverStick = new Attack3Joystick(rightDriverStickPort);
+			rightDriverStick = new Joystick(rightDriverStickPort);
 		} catch (Exception e) {
 			System.out.println("OI: Error instantiating rightDriverStick: " + e.getMessage());
 		}
@@ -91,6 +92,9 @@ public class OI {
 			System.out.println("OI: Error instantiating goController: " + e.getMessage());
 		}
 		
+			vectoredDriveBtn = new JoystickButton(rightDriverStick, 1);
+			vectoredDriveBtn.whileHeld(new VectoredDrive());
+			
 			resetGyroBtn = new JoystickButton(rightDriverStick, 2);
 			resetGyroBtn.whenPressed(new ResetGyro());
 		
