@@ -36,8 +36,8 @@ public class AutoDriveFoward extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.mecanumDrive.getRoboDrive().tankDrive(speed, -1*speed);
-    	SmartDashboard.putNumber("Left Front Encoder", Robot.mecanumDrive.getEncoderLeftFront().get());
-    	SmartDashboard.putNumber("Right Front Encoder", Robot.mecanumDrive.getEncoderRightFront().get());
+    	SmartDashboard.putNumber("LF Encoder Val", Robot.mecanumDrive.getEncoderLeftFront().get());
+    	SmartDashboard.putNumber("RF Encoder Val", Robot.mecanumDrive.getEncoderRightFront().get());
     	encoderLeftFront = Robot.mecanumDrive.getEncoderLeftFront().get();
     	encoderRightFront = Robot.mecanumDrive.getEncoderRightFront().get();
     }
