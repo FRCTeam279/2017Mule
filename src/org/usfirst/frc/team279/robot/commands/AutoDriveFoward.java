@@ -28,11 +28,9 @@ public class AutoDriveFoward extends Command {
     	
     	Robot.mecanumDrive.getEncoderLeftFront().reset();
     	Robot.mecanumDrive.getEncoderRightFront().reset();
-    	encoderLeftFront = Robot.mecanumDrive.getEncoderLeftFront().get();
-    	encoderRightFront = Robot.mecanumDrive.getEncoderRightFront().get();
     	//Look to see for prod Robot
     	Robot.mecanumDrive.getEncoderRightFront().setReverseDirection(true);
-    	Robot.mecanumDrive.getEncoderLeftFront().setReverseDirection(true);
+    	Robot.mecanumDrive.getEncoderLeftFront().setReverseDirection(false);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -40,12 +38,13 @@ public class AutoDriveFoward extends Command {
     	Robot.mecanumDrive.getRoboDrive().tankDrive(speed, -1*speed);
     	SmartDashboard.putNumber("Left Front Encoder", Robot.mecanumDrive.getEncoderLeftFront().get());
     	SmartDashboard.putNumber("Right Front Encoder", Robot.mecanumDrive.getEncoderRightFront().get());
-    	
+    	encoderLeftFront = Robot.mecanumDrive.getEncoderLeftFront().get();
+    	encoderRightFront = Robot.mecanumDrive.getEncoderRightFront().get();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if((encoderRightFront  >= target) && (encoderLeftFront >= target)){ 
+        if((encoderRightFront  <= target) && (encoderLeftFront <= target)){ 
         	return true;
         }else{
         	return false;

@@ -82,10 +82,6 @@ public class MecanumDrive extends Subsystem {
 		return encoderRightRear;
 	}
 		
-	private boolean invertLeftFrontEnc = false;
-	private boolean invertRightFrontEnc = true;
-	private boolean invertLeftRearEnc = false;
-	private boolean invertRightRearEnc = true;
 	
 	public void loadPrefs(){
 		Config c = new Config();
