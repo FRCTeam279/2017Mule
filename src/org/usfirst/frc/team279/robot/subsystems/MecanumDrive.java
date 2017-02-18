@@ -3,7 +3,6 @@ package org.usfirst.frc.team279.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
-import edu.wpi.first.wpilibj.Ultrasonic;
 
 import javax.print.attribute.standard.MediaSize.Other;
 
@@ -24,14 +23,14 @@ public class MecanumDrive extends Subsystem {
 	}
 	
 	
-	private int encoderLeftFrontPortA = 5;
-	private int encoderLeftFrontPortB = 6;
-	private int encoderRightFrontPortA = 7;
-	private int encoderRightFrontPortB = 8;
-	private int encoderLeftRearPortA = 9;
-	private int encoderLeftRearPortB = 10;
-	private int encoderRightRearPortA = 11;
-	private int encoderRightRearPortB = 12;
+	private int encoderLeftFrontPortA = 0;
+	private int encoderLeftFrontPortB = 1;
+	private int encoderRightFrontPortA = 4;
+	private int encoderRightFrontPortB = 5;
+	private int encoderLeftRearPortA = 2;
+	private int encoderLeftRearPortB = 3;
+	private int encoderRightRearPortA = 6;
+	private int encoderRightRearPortB = 7;
 	
 	//The preferencesPrefix will be prepended to the preferences loaded from the Robot Preferences
 	private String prefPrefix = "md_";
@@ -83,7 +82,10 @@ public class MecanumDrive extends Subsystem {
 		return encoderRightRear;
 	}
 		
-	
+	private boolean invertLeftFrontEnc = false;
+	private boolean invertRightFrontEnc = true;
+	private boolean invertLeftRearEnc = false;
+	private boolean invertRightRearEnc = true;
 	
 	public void loadPrefs(){
 		Config c = new Config();
@@ -112,7 +114,7 @@ public class MecanumDrive extends Subsystem {
 	}
 
 	
-	public void init(){
+	public void init() throws RuntimeException {
 		System.out.println("MD: MechenumDrive Init Starting");
 		
 		loadPrefs();
@@ -123,6 +125,11 @@ public class MecanumDrive extends Subsystem {
 		leftRearSpeedCtrl = new VictorSP(leftRearSpeedCtrlPort);
 		rightRearSpeedCtrl = new VictorSP(rightRearSpeedCtrlPort);
 		
+		encoderLeftFront = new Encoder(0,1);
+		encoderRightFront = new Encoder(4,5);
+		encoderLeftRear = new Encoder(2,3);
+		encoderRightRear = new Encoder(6,7);
+		
 		roboDrive = new RobotDrive(leftFrontSpeedCtrl, leftRearSpeedCtrl, rightFrontSpeedCtrl, rightRearSpeedCtrl);
 		roboDrive.setSafetyEnabled(false);
 		//roboDrive.setExpiration(0.5);
@@ -132,11 +139,24 @@ public class MecanumDrive extends Subsystem {
 		roboDrive.setInvertedMotor(MotorType.kRearLeft, invertLeftRear);
 		roboDrive.setInvertedMotor(MotorType.kRearRight, invertRightRear);
 
-//		encoderLeftFront = new Encoder(5,6);
-//		encoderRightFront = new Encoder(7,8);
-//		encoderLeftRear = new Encoder(9,10);
-//		encoderRightRear = new Encoder(11,12);
 
+		//encoderLeftFront = new Encoder(encoderLeftFrontPortA,encoderLeftFrontPortB);
+		//encoderRightFront = new Encoder(encoderRightFrontPortA,encoderRightFrontPortB);
+		//encoderLeftRear = new Encoder(encoderLeftRearPortA,encoderLeftRearPortB);
+		//encoderRightRear = new Encoder(encoderRightRearPortA,encoderRightRearPortB);
+		
+		//encoderLeftFront.setReverseDirection(invertLeftFrontEnc);
+		//encoderRightFront.setReverseDirection(invertRightFrontEnc);
+		//encoderLeftRear.setReverseDirection(invertLeftRearEnc);
+		//encoderRightRear.setReverseDirection(invertRightRearEnc);
+		
+		//double dpp = Math.PI * wheelDiameterInches / encoderPulseCount;
+		//encoderLeftFront.setDistancePerPulse(dpp);
+		//encoderLeftRear.setDistancePerPulse(dpp);
+		//encoderRightFront.setDistancePerPulse(dpp);
+		//encoderRightRear.setDistancePerPulse(dpp);
+		//System.out.println("MD: Calculated distance per pulse = " + dpp);	
+		
 		System.out.println("MD: MechenumDrive Init Complete");	
 	}
 	
