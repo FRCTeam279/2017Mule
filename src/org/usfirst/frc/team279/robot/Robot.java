@@ -56,6 +56,7 @@ public class Robot extends IterativeRobot {
 	public static final Shooter shooter = new Shooter();
 	public static final Ultrasonics ultrasonics = new Ultrasonics();
 	public static final GearGizmo geargizmo = new GearGizmo();
+	public static final Harvelator harvelator = new Harvelator();
 	
 	public static OI oi;
 	
@@ -99,6 +100,12 @@ public class Robot extends IterativeRobot {
 		} catch(RuntimeException e) {
 			DriverStation.reportError("Robot: Error instantiating GearGizmo:  " + e.getMessage(), true);
 		}
+		
+		try {
+			Robot.harvelator.init();
+		} catch(RuntimeException e) {
+			DriverStation.reportError("Robot: Error instantiating Harvelator:  " + e.getMessage(), true);
+		}
 		//Subsystem Init's -- End
 	
 	
@@ -125,9 +132,9 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putData("Start Ultrasonics",new StartUltrasonicsThread());
 		SmartDashboard.putData("Stop Ultrasonics",new StopUltrasonicsThread());
-		SmartDashboard.putData("Get Gear Distances",new DisplayGearRanges());
-		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(10,11));
-		SmartDashboard.putData("Left US POC",new ReadOneUltrasonicPOC(12,13));
+		SmartDashboard.putData("Start Harvelator",new RunHarvelatorFWD());
+		SmartDashboard.putData("Reverse Harvelator",new RunHarvelatorRWD());
+		SmartDashboard.putData("Stop Harvelator",new StopHarvelator());
 		
 		SmartDashboard.putData("Open Door", new OpenGearDoor());
 		SmartDashboard.putData("Close Door", new CloseGearDoor());

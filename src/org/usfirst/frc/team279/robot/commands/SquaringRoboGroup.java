@@ -11,7 +11,7 @@ public class SquaringRoboGroup extends CommandGroup {
         // Add Commands here:
          addSequential(new StartUltrasonicsThread());
          addSequential(new Delay(2000));
-         addSequential(new SquareRobo());
+         addSequential(new SquareRobo("rangeGearLeft","rangeGearRight"));
          addSequential(new StopUltrasonicsThread());
         // these will run in order.
 
