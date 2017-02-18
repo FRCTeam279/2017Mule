@@ -45,9 +45,9 @@ public class OI {
 		return goController;
 	}
 	
-	private double leftStickNullZone = 0.15;
-	private double rightStickNullZone = 0.15;
-	private double goControllerNullZone = 0.15;
+	private double leftStickNullZone = 0.075;
+	private double rightStickNullZone = 0.075;
+	private double goControllerNullZone = 0.1;
 	
 	public double getLeftStickNullZone() {
 		return leftStickNullZone;

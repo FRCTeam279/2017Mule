@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 
 	public void robotInit() {
 		
-		//Robot.mecanumDrive.init();
+		Robot.mecanumDrive.init();
 		//Robot.shooter.init();
 		Robot.ultrasonics.init();
 		//Robot.geargizmo.init();
@@ -92,7 +92,9 @@ public class Robot extends IterativeRobot {
 		Robot.getAhrs().setAngleAdjustment(ahrsGyroAdjustment);
 		
 		chooser.addDefault("Default Auto", new DefaultAuto());
-		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.3));
+		chooser.addObject("Rotate Angle Degrees", new RotateAngleDegrees(45.0, 0.2));
+		
+
 		chooser.addObject("AutoDriveForward", new AutoDriveFoward());
 		SmartDashboard.putData("Auto mode", chooser);
 		
